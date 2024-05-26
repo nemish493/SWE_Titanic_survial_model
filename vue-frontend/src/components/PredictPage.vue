@@ -1,18 +1,19 @@
 <template>
     <div>
-      <h1>Predict Page</h1>
-      <router-link to="/"><button class="cta-button">Back 🤛🏼</button></router-link>
+      <h1>Enter Values to Predict</h1>
+      
   
       <!-- Combined form for both string and integer input -->
       <form @submit.prevent="submitForm">
-        <label for="stringInput">Enter a String:</label>
+        <label for="stringInput">Enter Passenger Class:</label>
         <input type="text" id="stringInput" v-model="stringInput">
         
-        <label for="integerInput">Enter an Integer:</label>
+        <label for="integerInput">Enter Age:</label>
         <input type="number" id="integerInput" v-model.number="integerInput">
         
         <button type="submit" class="cta-button">Submit</button>
       </form>
+      <router-link to="/"><button class="cta-button">Back</button></router-link>
     </div>
   </template>
   

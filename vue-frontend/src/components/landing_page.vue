@@ -11,8 +11,8 @@
           <h1>Titanic Survival Prediction</h1>
           <p>A ML model to predict if you will survive the Crash !</p>
             <div class="button-container">
-                <router-link to="/predict"><button class="cta-button">Wish me Luck 💪🏼</button></router-link>
-                <router-link to="/basics"><button class="cta-button">Learn Basics ⚒️</button></router-link>
+                <router-link to="/predict"><button class="cta-button">Prediction Calculator</button></router-link>
+                <router-link to="/basics"><button class="cta-button">Learn Basics</button></router-link>
             </div>
         </div>
       </div>

@@ -4,7 +4,7 @@
     <h1>{{ messageFromBackend }}</h1>
     <div class="button-container">
       <button class="cta-button" @click="fetchData">Fetch Data from Backend</button>
-      <router-link to="/"><button class="cta-button">Back 🤛🏼</button></router-link>
+      <router-link to="/"><button class="cta-button">Back</button></router-link>
     </div>
   </div>
 </template>
