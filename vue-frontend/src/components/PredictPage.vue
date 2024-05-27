@@ -1,66 +1,54 @@
 <template>
-  <div class="predict-page">
-    <h1>Enter value to get your Prediction</h1>
+  <div>
+    <h1>Predict Page</h1>
+    <router-link to="/"><button class="cta-button">Back 🤛🏼</button></router-link>
 
-    <form @submit.prevent="submitForm" class="predict-form">
+    <!-- Combined form with dropdowns and sliders -->
+    <form @submit.prevent="submitForm" class="form-container">
       <div class="form-group">
-        <label for="pclass">Passenger Class:</label>
-        <select id="pclass" v-model="pclass">
-          <option>First</option>
-          <option>Second</option>
-          <option>Third</option>
+        <label for="dropdown1">Select Option 1:</label>
+        <select id="dropdown1" v-model="dropdown1" required>
+          <option disabled value="">Please select one</option>
+          <option value="Option 1A">Option 1A</option>
+          <option value="Option 1B">Option 1B</option>
+          <option value="Option 1C">Option 1C</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label for="sex">Sex:</label>
-        <select id="sex" v-model="sex">
-          <option>Male</option>
-          <option>Female</option>
+        <label for="dropdown2">Select Option 2:</label>
+        <select id="dropdown2" v-model="dropdown2" required>
+          <option disabled value="">Please select one</option>
+          <option value="Option 2A">Option 2A</option>
+          <option value="Option 2B">Option 2B</option>
+          <option value="Option 2C">Option 2C</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label for="age">Age:</label>
-        <input type="number" id="age" v-model.number="age" min="0" max="100">
-      </div>
-
-      <div class="form-group">
-        <label for="fare">Fare ($):</label>
-        <input type="number" id="fare" v-model.number="fare" min="0" max="500">
-      </div>
-
-      <div class="form-group">
-        <label for="traveledAlone">Traveled Alone:</label>
-        <select id="traveledAlone" v-model="traveledAlone">
-          <option>Yes</option>
-          <option>No</option>
+        <label for="dropdown3">Select Option 3:</label>
+        <select id="dropdown3" v-model="dropdown3" required>
+          <option disabled value="">Please select one</option>
+          <option value="Option 3A">Option 3A</option>
+          <option value="Option 3B">Option 3B</option>
+          <option value="Option 3C">Option 3C</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label for="embarked">Embarked:</label>
-        <select id="embarked" v-model="embarked">
-          <option>Cherbourg</option>
-          <option>Queenstown</option>
-          <option>Southampton</option>
-        </select>
+        <label for="slider1">Select a value (1-50):</label>
+        <input type="range" id="slider1" v-model.number="slider1" min="1" max="50" required>
+        <span>{{ slider1 }}</span>
       </div>
-      
+
+      <div class="form-group">
+        <label for="slider2">Select a value (1-50):</label>
+        <input type="range" id="slider2" v-model.number="slider2" min="1" max="50" required>
+        <span>{{ slider2 }}</span>
+      </div>
+
       <button type="submit" class="cta-button">Submit</button>
     </form>
-
-    <router-link to="/"><button class="cta-button">Back</button></router-link>
-
-    
-    <div v-if="showModal" class="modal-overlay">
-      <div class="modal">
-        <h2>Prediction Result</h2>
-        <p v-if="loading">Loading...</p>
-        <p v-else>{{ resultMessage }}</p>
-        <button @click="closeModal" class="cta-button">Close</button>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -70,86 +58,42 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      pclass: 'Third',
-      sex: 'Male',
-      age: 25,
-      fare: 50,
-      traveledAlone: 'Yes',
-      embarked: 'Southampton',
-      showModal: false,
-      resultMessage: '',
-      loading: false
+      dropdown1: '',
+      dropdown2: '',
+      dropdown3: '',
+      slider1: 1,
+      slider2: 1
     };
   },
   methods: {
     async submitForm() {
-      this.loading = true;
-      this.showModal = true;
       try {
-        // Simulate response for now
-        // const response = await axios.post('http://127.0.0.1:8000/submit-form', {
-        await axios.post('http://127.0.0.1:8000/submit-form', {
-          pclass: this.pclass,
-          sex: this.sex,
-          age: this.age,
-          fare: this.fare,
-          traveledAlone: this.traveledAlone,
-          embarked: this.embarked
+        const response = await axios.post('http://127.0.0.1:8000/submit-form', {
+          dropdown1: this.dropdown1,
+          dropdown2: this.dropdown2,
+          dropdown3: this.dropdown3,
+          slider1: this.slider1,
+          slider2: this.slider2
         });
-        
-        // Simulated response
-        this.resultMessage = 'Based on the input data, you would survive the Titanic crash!';
+        console.log(response.data);
       } catch (error) {
         console.error('Error submitting form:', error);
-        this.resultMessage = 'There was an error processing your request. Please try again.';
-      } finally {
-        this.loading = false;
       }
-    },
-    closeModal() {
-      this.showModal = false;
     }
   }
 }
 </script>
 
 <style>
-.predict-page {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.predict-page h1 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.predict-form {
+.form-container {
   display: flex;
   flex-direction: column;
+  gap: 15px;
 }
 
 .form-group {
-  margin-bottom: 15px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-.form-group input,
-.form-group select {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
 .cta-button {
@@ -161,42 +105,10 @@ export default {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
-  align-self: center;
+  margin-top: 20px;
 }
 
 .cta-button:hover {
   background-color: #1f9d55; /* Darker green on hover */
-}
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal {
-  background: #fff;
-  padding: 30px 40px; /* Increased padding for better spacing */
-  border-radius: 10px;
-  max-width: 500px;
-  text-align: center;
-}
-
-.modal h2 {
-  margin-bottom: 20px; /* Added margin for spacing */
-}
-
-.modal p {
-  margin-bottom: 20px; /* Added margin for spacing */
-}
-
-.modal .cta-button {
-  margin-top: 20px; /* Added margin for spacing */
 }
 </style>

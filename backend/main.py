@@ -7,6 +7,13 @@ import numpy as np
 
 app = FastAPI()
 
+class FormData(BaseModel):
+    dropdown1: str
+    dropdown2: str
+    dropdown3: str
+    slider1: int
+    slider2: int
+
 # Load models
 with open('models/Decision Tree.pkl', 'rb') as file:
     decision_tree = load(file)
@@ -82,6 +89,11 @@ def predict_survival(model_name, data):
 @app.post("/surv_or_not/{model_name}")
 async def surv_or_not(model_name: str, passenger: Passenger):
     return predict_survival(model_name, passenger)
+
+@app.post("/submit-form")
+async def submit_form(data: FormData):
+    print(data)
+    return {"message": "Form submitted successfully"}
 
 @app.get("/api")
 def read_root():
