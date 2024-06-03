@@ -51,7 +51,7 @@
             <p>Role</p>
           </div>
           <div class="team-member">
-            <img src="../assets/bhanu.png" alt="Bhanu Pratap Singh">
+            <img src="../assets/aadi.png" alt="Bhanu Pratap Singh">
             <h4>Aadi Ahluwalia</h4>
             <p>Role</p>
           </div>
