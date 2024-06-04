@@ -43,15 +43,20 @@ titanic-survival-calculator/
 │   ├── Dockerfile
 │   └── requirements.txt
 │
-├── frontend/
+├── vue-frontend/
 │   ├── public/
 │   │   └── index.html
 │   ├── src/
+│   │   ├── Assests/
+│   │   │   │  
+│   │   │   └── images files
 │   │   ├── components/
-│   │   │   └── SurvivalCalculator.vue
+│   │   │   │  
+│   │   │   ├── HelloWorld.vue
+│   │   │   ├── PredictPage.vue
+│   │   │   └── Landing_page.vue
 │   │   ├── App.vue
-│   │   ├── main.js
-│   │   └── router.js
+│   │   └── main.js
 │   ├── cypress/
 │   │   ├── integration/
 │   │   │   └── survival_calculator_spec.js
