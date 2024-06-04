@@ -19,6 +19,54 @@ This project is part of the Summerterm 2024 AIN-B Software Engineering course le
   - Nemish Kyada : 22212034
   - Rohit Galani : 22209032
 
+## Project Structure
+```
+titanic-survival-calculator/
+├── backend/
+│   ├── app/
+│   │   ├── __init__.py
+│   │   ├── main.py
+│   │   ├── models.py
+│   │   ├── schemas.py
+│   │   ├── routers/
+│   │   │   ├── __init__.py
+│   │   │   ├── prediction.py
+│   │   │   └── validation.py
+│   │   └── tests/
+│   │       ├── unit/
+│   │       │   ├── __init__.py
+│   │       │   └── test_passenger_data_validation.py
+│   │       ├── integration/
+│   │       │   ├── __init__.py
+│   │       │   └── test_prediction_api.py
+│   │       └── __init__.py
+│   ├── Dockerfile
+│   └── requirements.txt
+│
+├── frontend/
+│   ├── public/
+│   │   └── index.html
+│   ├── src/
+│   │   ├── components/
+│   │   │   └── SurvivalCalculator.vue
+│   │   ├── App.vue
+│   │   ├── main.js
+│   │   └── router.js
+│   ├── cypress/
+│   │   ├── integration/
+│   │   │   └── survival_calculator_spec.js
+│   │   ├── fixtures/
+│   │   ├── plugins/
+│   │   ├── support/
+│   │   ├── cypress.json
+│   │   └── package.json
+│   ├── Dockerfile
+│   └── package.json
+│
+├── docker-compose.yml
+├── .gitlab-ci.yml
+└── README.md
+```
 ## Requirements and Setup
 
 ### Prerequisites
