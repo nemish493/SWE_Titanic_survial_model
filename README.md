@@ -83,18 +83,18 @@ The project is divided into two repositories within the team's Gitlab group:
 
 Clone both repositories to your local machine.
 
-\`\`\`sh
+```sh
 git clone <web_application_service_repo>
 git clone <prediction_model_service_repo>
-\`\`\`
+```
 
 ### Building and Running the Application
 
 Navigate to the directory containing the Docker Compose file and run the following command to build and start the services:
 
-\`\`\`sh
+```sh
 docker-compose up --build
-\`\`\`
+```
 
 This command will:
 - Build Docker images for both the web application service and the prediction model service.
@@ -104,9 +104,9 @@ This command will:
 
 Once the services are up and running, open your web browser and navigate to:
 
-\`\`\`
+```
 https://localhost:8080
-\`\`\`
+```
 
 ## Application Structure
 
