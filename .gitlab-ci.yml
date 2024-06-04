@@ -1,0 +1,29 @@
+stages:
+  - lint
+  - test
+  - e2e
+
+lint:
+  script:
+    - flake8 app/
+
+unit_tests:
+  stage: test
+  script:
+    - pytest --cov=app tests/unit
+
+integration_tests:
+  stage: test
+  script:
+    - docker-compose up -d
+    - pytest --cov=app tests/integration
+    - docker-compose down
+
+e2e_tests:
+  stage: e2e
+  script:
+    - docker-compose up -d
+    - npx cypress run
+    - docker-compose down
+  only:
+    - schedules
