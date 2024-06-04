@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  webapp:
+    build: ./AIN-B-24_Sancus_titanic_web_services
+    ports:
+      - "8080:8080"
+    depends_on:
+      - model
+    environment:
+      - MODEL_API_URL=http://model:8000
+
+  model:
+    build: ./AIN-B-24_Sancus_titanic_model_services
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_PATH=/app/models
