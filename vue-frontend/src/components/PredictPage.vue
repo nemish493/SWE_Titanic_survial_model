@@ -49,7 +49,8 @@
 
       <button type="submit" class="cta-button">Submit</button>
     </form>
-    <router-link to="/"><button class="cta-button">Back 🤛🏼</button></router-link>
+    <router-link to="/"><button class="cta-button">Back</button></router-link>
+    <router-link to="/basics"><button class="cta-button">Learn Basics</button></router-link>
   </div>
 </template>
 

@@ -8,8 +8,8 @@
         </div>
 
         <ul class="nav-links">
-            <li id="link2" class="link"><a href="#">About Group</a></li>
-            <li id="link3" class="link"><a href="#">Links</a></li>
+            <li class="link"><a href="#">About Group</a></li>
+            <li class="link"><a href="#">Links</a></li>
         </ul>
         <router-link to="/basics"><button class="btn">Learn Basics</button></router-link>
     </nav>
@@ -38,42 +38,42 @@
           <div class="team-member">
             <img src="../assets/bhanu.png" alt="Bhanu Pratap Singh">
             <h4>Bhanu Pratap Singh</h4>
-            <p>Role</p>
+            <p><ul><li>Frontend Engineer</li><li>UI/UX Designer</li></ul></p>
           </div>
           <div class="team-member">
             <img src="../assets/rohit.png" alt="Bhanu Pratap Singh">
             <h4>Rohit Galani</h4>
-            <p>Role</p>
+            <p><ul><li>Backend Engineer</li></ul></p>
           </div>
           <div class="team-member">
             <img src="../assets/nemish.png" alt="Bhanu Pratap Singh">
             <h4>Nemish Kyada</h4>
-            <p>Role</p>
+            <p><ul><li>Software Tester</li><li>DevOps Engineer</li></ul></p>
           </div>
           <div class="team-member">
             <img src="../assets/aadi.png" alt="Bhanu Pratap Singh">
             <h4>Aadi Ahluwalia</h4>
-            <p>Role</p>
+            <p><ul><li>Deployment Specialist</li><li>Version Control Manager</li></ul></p>
           </div>
           <div class="team-member">
-            <img src="../assets/bhanu.png" alt="Bhanu Pratap Singh">
+            <img src="../assets/aryan.png" alt="Bhanu Pratap Singh">
             <h4>Aryan Jain</h4>
-            <p>Role</p>
+            <p><ul><li>Deployment Specialist</li><li>Version Control Manager</li></ul></p>
           </div>
           <div class="team-member">
             <img src="../assets/avanish.png" alt="Bhanu Pratap Singh">
             <h4>Avanish Singh</h4>
-            <p>Role</p>
+            <p><ul><li>Software Tester</li><li>DevOps Engineer</li></ul></p>
           </div>
           <div class="team-member">
-            <img src="../assets/bhanu.png" alt="Bhanu Pratap Singh">
+            <img src="../assets/pp.webp" alt="Bhanu Pratap Singh">
             <h4>Harsh Gurawaliya</h4>
-            <p>Role</p>
+            <p><ul><li>Backend Engineer</li></ul></p>
           </div>
           <div class="team-member">
-            <img src="../assets/bhanu.png" alt="Bhanu Pratap Singh">
+            <img src="../assets/pp.webp" alt="Bhanu Pratap Singh">
             <h4>Jijainth Dhinakaran</h4>
-            <p>Role</p>
+            <p><ul><li>Frontend Engineer</li><li>UI/UX Designer</li></ul></p>
           </div>
         </div>
       </div>
@@ -168,7 +168,7 @@ nav{
     font-size: 1rem;
     color: #fff;
     background-color: #1d4ed8;
-    border-radius: 5px;
+    border-radius: 50px;
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -276,7 +276,7 @@ footer{
 }
 
 .team-member p{
-  font-size: 1rem;
+  font-size: 0.7rem;
   color: #ccc;
 }
 
