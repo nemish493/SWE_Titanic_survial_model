@@ -8,7 +8,7 @@
         </div>
 
         <ul class="nav-links">
-            <li class="link"><a href="#">About Group</a></li>
+           <li class="link"><a href="#team">About Group</a></li>
             <li class="link"><a href="#">Links</a></li>
         </ul>
         <router-link to="/basics"><button class="btn">Learn Basics</button></router-link>
@@ -32,7 +32,7 @@
     </header>
 
     <footer>
-      <div class="footer-container">
+      <div id="team" class="footer-container">
         <h1>Meet Our Team</h1>
         <div class="team-grid">
           <div class="team-member">
