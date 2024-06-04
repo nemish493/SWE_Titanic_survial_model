@@ -1,18 +1,17 @@
-version: '3.8'
-
+version: '3'
 services:
-  webapp:
-    build: ./AIN-B-24_Sancus_titanic_web_services
-    ports:
-      - "8080:8080"
-    depends_on:
-      - model
-    environment:
-      - MODEL_API_URL=http://model:8000
-
-  model:
-    build: ./AIN-B-24_Sancus_titanic_model_services
+  backend:
+    build: ./backend
     ports:
       - "8000:8000"
-    environment:
-      - MODEL_PATH=/app/models
+    container_name: backend_service_container
+
+  frontend:
+    build: ./vue-frontend
+    ports:
+      - "5000:5000"
+    container_name: frontend_service_container
+    depends_on:
+      - backend
+
+
