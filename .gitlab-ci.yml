@@ -4,20 +4,26 @@ stages:
 
 variables:
   DOCKER_DRIVER: overlay2
-  DOCKER_HOST: tcp://docker:2375/
   DOCKER_TLS_CERTDIR: ""
 
 services:
-  - name: docker:20.10.16-dind
-    command: ["--tls=false"]
+  - name: docker:24.0.1-dind
+    command: ["--host=tcp://0.0.0.0:2375"]
 
 before_script:
-  - docker info
+  - echo "Waiting for Docker to be ready..."
+  - >
+    while (! docker info > /dev/null 2>&1); do
+      echo "Waiting for Docker to be ready...";
+      sleep 1;
+    done
   - docker-compose version
 
 build_backend:
   stage: build
-  image: docker:20.10.16
+  image: docker:24.0.1
+  variables:
+    DOCKER_HOST: tcp://docker:2375
   script:
     - docker-compose build backend
   artifacts:
@@ -26,7 +32,9 @@ build_backend:
 
 build_frontend:
   stage: build
-  image: docker:20.10.16
+  image: docker:24.0.1
+  variables:
+    DOCKER_HOST: tcp://docker:2375
   script:
     - docker-compose build frontend
   artifacts:
@@ -36,6 +44,8 @@ build_frontend:
 test_backend:
   stage: test
   image: docker/compose:1.29.2
+  variables:
+    DOCKER_HOST: tcp://docker:2375
   script:
     - docker-compose up -d backend
     - docker-compose run backend pytest app/tests
@@ -47,6 +57,8 @@ test_backend:
 test_frontend:
   stage: test
   image: docker/compose:1.29.2
+  variables:
+    DOCKER_HOST: tcp://docker:2375
   script:
     - docker-compose up -d frontend
     - docker-compose run frontend npm install
@@ -55,3 +67,4 @@ test_frontend:
     - build_frontend
   after_script:
     - docker-compose down
+
