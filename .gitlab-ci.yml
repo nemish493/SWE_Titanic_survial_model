@@ -1,69 +1,58 @@
 stages:
   - build
   - test
+  - deploy
 
+# Variables for Docker image versions
 variables:
   DOCKER_DRIVER: overlay2
-  DOCKER_TLS_CERTDIR: ""
 
-services:
-  - name: docker:24.0.1-dind
-    command: ["--host=tcp://0.0.0.0:2375"]
-
-before_script:
-  - echo "Waiting for Docker to be ready..."
-  - >
-    while (! docker info > /dev/null 2>&1); do
-      echo "Waiting for Docker to be ready...";
-      sleep 1;
-    done
-  - docker-compose version
-
-build_backend:
+# Backend Build Job
+build-backend:
   stage: build
-  image: docker:24.0.1
-  variables:
-    DOCKER_HOST: tcp://docker:2375
   script:
-    - docker-compose build backend
-  artifacts:
-    paths:
-      - backend_service_container
+    - echo "Building Backend Docker Image..."
+    - docker build -t $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME ./backend
+  only:
+    - main
+    - develop
 
-build_frontend:
+# Frontend Build Job
+build-frontend:
   stage: build
-  image: docker:24.0.1
-  variables:
-    DOCKER_HOST: tcp://docker:2375
   script:
-    - docker-compose build frontend
-  artifacts:
-    paths:
-      - frontend_service_container
+    - echo "Building Frontend Docker Image..."
+    - docker build -t $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME ./vue-frontend
+  only:
+    - main
+    - develop
 
-test_backend:
+# Backend Test Job
+test-backend:
   stage: test
-  image: docker/compose:1.29.2
-  variables:
-    DOCKER_HOST: tcp://docker:2375
+  services:
+    - docker:dind
   script:
-    - docker-compose up -d backend
-    - docker-compose run backend pytest app/tests
-  dependencies:
-    - build_backend
-  after_script:
-    - docker-compose down
+    - echo "Running Backend Unit Tests..."
+    - docker build -t backend-test-image ./backend
+    - docker run --rm backend-test-image pytest
+  only:
+    - merge_requests
+    - main
+    - develop
 
-test_frontend:
+# Frontend Test Job
+test-frontend:
   stage: test
-  image: docker/compose:1.29.2
-  variables:
-    DOCKER_HOST: tcp://docker:2375
+  services:
+    - docker:dind
   script:
-    - docker-compose up -d frontend
-    - docker-compose run frontend npm install
-    - docker-compose run frontend npm run test
-  dependencies:
-    - build_frontend
-  after_script:
-    - docker-compose down
+    - echo "Running Frontend Tests..."
+    - docker build -t frontend-test-image ./vue-frontend
+    - docker run --rm frontend-test-image npm run test
+  only:
+    - merge_requests
+    - main
+    - develop
+
+
