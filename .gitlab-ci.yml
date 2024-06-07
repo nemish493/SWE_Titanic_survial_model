@@ -67,4 +67,3 @@ test_frontend:
     - build_frontend
   after_script:
     - docker-compose down
-
