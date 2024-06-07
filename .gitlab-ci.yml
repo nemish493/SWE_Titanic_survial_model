@@ -8,7 +8,8 @@ variables:
   DOCKER_TLS_CERTDIR: ""
 
 services:
-  - docker:dind
+  - name: docker:20.10.16-dind
+    command: ["--tls=false"]
 
 before_script:
   - docker info
@@ -16,7 +17,7 @@ before_script:
 
 build_backend:
   stage: build
-  image: docker:latest
+  image: docker:20.10.16
   script:
     - docker-compose build backend
   artifacts:
@@ -25,7 +26,7 @@ build_backend:
 
 build_frontend:
   stage: build
-  image: docker:latest
+  image: docker:20.10.16
   script:
     - docker-compose build frontend
   artifacts:
