@@ -1,29 +1,43 @@
 stages:
-  - lint
+  - build
   - test
-  - e2e
 
-lint:
+variables:
+  DOCKER_DRIVER: overlay2
+
+services:
+  - docker:dind
+
+before_script:
+  - docker info
+  - docker-compose version
+
+build_backend:
+  stage: build
   script:
-    - flake8 app/
+    - docker-compose build backend
+  artifacts:
+    paths:
+      - backend_service_container
 
-unit_tests:
+build_frontend:
+  stage: build
+  script:
+    - docker-compose build frontend
+  artifacts:
+    paths:
+      - frontend_service_container
+
+test_backend:
   stage: test
   script:
-    - pytest --cov=app tests/unit
+    - docker-compose run backend pytest
+  dependencies:
+    - build_backend
 
-integration_tests:
+test_frontend:
   stage: test
   script:
-    - docker-compose up -d
-    - pytest --cov=app tests/integration
-    - docker-compose down
-
-e2e_tests:
-  stage: e2e
-  script:
-    - docker-compose up -d
-    - npx cypress run
-    - docker-compose down
-  only:
-    - schedules
+    - docker-compose run frontend npm run test
+  dependencies:
+    - build_frontend
