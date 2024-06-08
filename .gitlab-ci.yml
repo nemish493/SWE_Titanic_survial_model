@@ -6,10 +6,13 @@ backend_tests:
   image: python:3.12
   stage: test
   before_script:
+    - echo "Setting up virtual environment"
     - python -m venv .venv
     - source .venv/bin/activate
+    - echo "Installing dependencies"
     - pip install -r backend/requirements.txt
   script:
+    - echo "Running pytest"
     - cd backend
     - pytest --junitxml=pytest-report.xml
   artifacts:
@@ -24,9 +27,12 @@ frontend_tests:
   image: cypress/base:latest
   stage: test
   before_script:
+    - echo "Navigating to vue-frontend"
     - cd vue-frontend
   script:
+    - echo "Installing npm dependencies"
     - npm install
+    - echo "Running Cypress tests"
     - npx cypress run
   artifacts:
     when: always
