@@ -11,28 +11,37 @@ services:
 
 before_script:
   - docker info
+  - echo "Environment Variables:"
+  - env
 
+# Job for building backend Docker image
 build_backend:
   stage: build
   image: docker:latest
   script:
+    - echo "Building backend image"
     - docker-compose build backend
 
+# Job for building frontend Docker image
 build_frontend:
   stage: build
   image: docker:latest
   script:
+    - echo "Building frontend image"
     - docker-compose build frontend
 
+# Job for running backend pytest tests
 backend_tests:
   stage: test
   image: docker:latest
   services:
     - docker:dind
   script:
+    - echo "Starting backend and db services"
     - docker-compose up -d db
     - docker-compose up -d backend
     - sleep 10  # Wait for the backend to be fully up
+    - echo "Running pytest tests"
     - docker-compose exec backend_service_container /bin/sh -c "pip install -r requirements.txt && pytest --junitxml=pytest-report.xml"
   artifacts:
     when: always
@@ -41,16 +50,19 @@ backend_tests:
     paths:
       - backend/pytest-report.xml
 
+# Job for running frontend Cypress tests
 frontend_tests:
   stage: test
   image: docker:latest
   services:
     - docker:dind
   script:
+    - echo "Starting db, backend, and frontend services"
     - docker-compose up -d db
     - docker-compose up -d backend
     - docker-compose up -d frontend
     - sleep 20  # Wait for the frontend and backend to be fully up
+    - echo "Running Cypress tests"
     - docker-compose exec frontend_service_container /bin/sh -c "npm install && npx cypress run"
   artifacts:
     when: always
