@@ -1,20 +1,39 @@
 stages:
+  - build
   - test
 
-# Job for running backend pytest tests
-backend_tests:
-  image: python:3.12
-  stage: test
-  before_script:
-    - echo "Setting up virtual environment"
-    - python -m venv .venv
-    - source .venv/bin/activate
-    - echo "Installing dependencies"
-    - pip install -r backend/requirements.txt
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: "/certs"
+
+services:
+  - docker:dind
+
+before_script:
+  - docker info
+
+build_backend:
+  stage: build
+  image: docker:latest
   script:
-    - echo "Running pytest"
-    - cd backend
-    - pytest --junitxml=pytest-report.xml
+    - docker-compose build backend
+
+build_frontend:
+  stage: build
+  image: docker:latest
+  script:
+    - docker-compose build frontend
+
+backend_tests:
+  stage: test
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker-compose up -d db
+    - docker-compose up -d backend
+    - sleep 10  # Wait for the backend to be fully up
+    - docker-compose exec backend_service_container /bin/sh -c "pip install -r requirements.txt && pytest --junitxml=pytest-report.xml"
   artifacts:
     when: always
     reports:
@@ -22,18 +41,17 @@ backend_tests:
     paths:
       - backend/pytest-report.xml
 
-# Job for running frontend Cypress tests
 frontend_tests:
-  image: cypress/base:latest
   stage: test
-  before_script:
-    - echo "Navigating to vue-frontend"
-    - cd vue-frontend
+  image: docker:latest
+  services:
+    - docker:dind
   script:
-    - echo "Installing npm dependencies"
-    - npm install
-    - echo "Running Cypress tests"
-    - npx cypress run
+    - docker-compose up -d db
+    - docker-compose up -d backend
+    - docker-compose up -d frontend
+    - sleep 20  # Wait for the frontend and backend to be fully up
+    - docker-compose exec frontend_service_container /bin/sh -c "npm install && npx cypress run"
   artifacts:
     when: always
     paths:
