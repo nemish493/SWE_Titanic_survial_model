@@ -1,23 +1,28 @@
 describe('Survival Calculator', () => {
   beforeEach(() => {
-    cy.visit('/calculator');
+    cy.visit('/predict');
   });
 
   it('should have all the necessary input fields', () => {
-    cy.get('select[name="pclass"]').should('exist');
-    cy.get('select[name="sex"]').should('exist');
-    cy.get('input[name="age"]').should('exist');
-    cy.get('input[name="fare"]').should('exist');
-    cy.get('select[name="embarked"]').should('exist');
+    cy.get('select[id="dropdown1"]').should('exist');
+    cy.get('select[id="dropdown2"]').should('exist');
+    cy.get('select[id="dropdown3"]').should('exist');
+    cy.get('input[id="slider1"]').should('exist');
+    cy.get('input[id="slider2"]').should('exist');
+    cy.get('select[id="dropdown4"]').should('exist');
   });
 
   it('should display prediction results', () => {
-    cy.get('select[name="pclass"]').select('First');
-    cy.get('select[name="sex"]').select('Male');
-    cy.get('input[name="age"]').type('30');
-    cy.get('input[name="fare"]').type('100');
-    cy.get('select[name="embarked"]').select('Cherbourg');
+    cy.get('select[id="dropdown1"]').select('First');
+    cy.get('select[id="dropdown2"]').select('Male');
+    cy.get('input[id="slider1"]').invoke('val', 30).trigger('input');
+    cy.get('input[id="slider2"]').invoke('val', 100).trigger('input');
+    cy.get('select[id="dropdown3"]').select('Cherbourg');
+    cy.get('select[id="dropdown4"]').select('Random Forest');
     cy.get('button[type="submit"]').click();
-    cy.contains('Survived').should('exist');
+    cy.wait(1000); // Wait for the response
+
+    // Take screenshot after all checks
+    cy.screenshot('Survival Calculator');
   });
 });

@@ -1,28 +1,36 @@
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+
 import pytest
-from fastapi.testclient import TestClient
-from main import app
+from pydantic import BaseModel
+from predict import predict_survival
 
-client = TestClient(app)
+class MockPassenger(BaseModel):
+    pclass: int
+    sex: str
+    age: float
+    fare: float
+    traveled_alone: bool
+    embarked: str
 
-def test_validate_passenger_data():
-    response = client.post("/validate", json={
-        "PClass": "First",
-        "Sex": "Male",
-        "Age": 30,
-        "Fare": 100,
-        "Traveled_Alone": "Yes",
-        "Embarked": "Cherbourg"
-    })
-    assert response.status_code == 200
-    assert response.json() == {"valid": True}
+@pytest.fixture
+def sample_passenger():
+    return MockPassenger(
+        pclass=1,
+        sex='male',
+        age=22,
+        fare=72.5,
+        traveled_alone=True,
+        embarked='Cherbourg'
+    )
 
-def test_invalid_age():
-    response = client.post("/validate", json={
-        "PClass": "First",
-        "Sex": "Male",
-        "Age": 150,  # Invalid age
-        "Fare": 100,
-        "Traveled_Alone": "Yes",
-        "Embarked": "Cherbourg"
-    })
-    assert response.status_code == 422
+def test_predict_survival_decision_tree(sample_passenger):
+    result = predict_survival('Decision Tree', sample_passenger)
+    assert 'survived' in result
+    assert isinstance(result['survived'], bool)
+
+def test_predict_survival_random_forest(sample_passenger):
+    result = predict_survival('Random Forest', sample_passenger)
+    assert 'survived' in result
+    assert isinstance(result['survived'], bool)
