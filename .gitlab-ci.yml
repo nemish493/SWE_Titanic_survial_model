@@ -1,51 +1,29 @@
 stages:
-  - build
+  - lint
   - test
+  - e2e
 
-variables:
-  DOCKER_DRIVER: overlay2
-
-# Use Docker image with Docker CLI tools
-image: docker:latest
-
-services:
-  - docker:dind
-
-before_script:
-  - docker info
-
-build-backend:
-  stage: build
+lint:
   script:
-    - echo "Building Backend Docker Image..."
-    - docker build -t $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_NAME ./backend
-  only:
-    - main
-    - develop
+    - flake8 app/
 
-build-frontend:
-  stage: build
-  script:
-    - echo "Building Frontend Docker Image..."
-    - docker build -t $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_NAME ./vue-frontend
-  only:
-    - main
-    - develop
-
-test-backend:
+unit_tests:
   stage: test
   script:
-    - echo "No backend tests to run"
-  only:
-    - merge_requests
-    - main
-    - develop
+    - pytest --cov=app tests/unit
 
-test-frontend:
+integration_tests:
   stage: test
   script:
-    - echo "No frontend tests to run"
+    - docker-compose up -d
+    - pytest --cov=app tests/integration
+    - docker-compose down
+
+e2e_tests:
+  stage: e2e
+  script:
+    - docker-compose up -d
+    - npx cypress run
+    - docker-compose down
   only:
-    - merge_requests
-    - main
-    - develop
+    - schedules
