@@ -21,56 +21,103 @@ This project is part of the Summerterm 2024 AIN-B Software Engineering course le
 
 ## Project Structure
 ```
-titanic-survival-calculator/
+Titanic Survival Calculator/
+├── __pycache__/
+│   ├── backend.cpython-310.pyc
+│   ├── main.cpython-310.pyc
+│   ├── main.cpython-311.pyc
 ├── backend/
-│   ├── app/
-│   │   ├── __init__.py
-│   │   ├── main.py
-│   │   ├── models.py
-│   │   ├── schemas.py
-│   │   ├── routers/
-│   │   │   ├── __init__.py
-│   │   │   ├── prediction.py
-│   │   │   └── validation.py
-│   │   └── tests/
-│   │       ├── unit/
-│   │       │   ├── __init__.py
-│   │       │   └── test_passenger_data_validation.py
-│   │       ├── integration/
-│   │       │   ├── __init__.py
-│   │       │   └── test_prediction_api.py
-│   │       └── __init__.py
-│   ├── Dockerfile
-│   └── requirements.txt
-│
+│   ├── __pycache__/
+│   │   ├── main.cpython-311.pyc
+│   │   ├── main.cpython-39.pyc
+│   ├── dist/
+│   │   ├── css/
+│   │   │   ├── app.a2f58a13.css
+│   │   ├── img/
+│   │   │   ├── ship.e4049565.png
+│   │   ├── js/
+│   │   │   ├── app.930f6ec9.js
+│   │   │   ├── app.930f6ec9.js.map
+│   │   │   ├── chunk-vendors.ee17c5bb.js
+│   │   │   ├── chunk-vendors.ee17c5bb.js.map
+│   │   ├── favicon.ico
+│   │   ├── index.html
+│   ├── models/
+│   │   ├── Decision Tree.pkl
+│   │   ├── Gaussian Naive Bayes.pkl
+│   │   ├── K-Nearest Neighbors.pkl
+│   │   ├── Logistic Regression.pkl
+│   │   ├── Perceptron.pkl
+│   │   ├── Random Forest.pkl
+│   │   ├── Stochastic Gradient Descent.pkl
+│   │   ├── Support Vector Machine.pkl
+│   ├── tests/
+│   │   ├── integration/
+│   │   │   ├── test_prediction_api.py
+│   │   ├── unit/
+│   │   │   ├── test_passenger_data_validation.py
+│   ├── .DS_Store
+│   ├── dockerfile
+│   ├── main.py
+│   ├── package-lock.json
+│   ├── requirements.txt
 ├── vue-frontend/
+│   ├── cypress/
+│   │   ├── e2e/
+│   │   │   ├── titanic/
+│   │   │   │   ├── landing_page.spec.cy.js
+│   │   │   │   ├── sample_test.cy.js
+│   │   │   │   ├── survival_calculator.spec.cy.js
+│   │   ├── fixtures/
+│   │   │   ├── example.json
+│   │   ├── screenshots/
+│   │   │   ├── landing_page.spec.cy.js/
+│   │   │   │   ├── Landing Page -- should display the landing page with correct elements (failed).png
+│   │   │   ├── sample_test.cy.js/
+│   │   │   │   ├── Sample Test -- should visit the app (failed).png
+│   │   │   ├── survival_calculator.spec.cy.js/
+│   │   │   │   ├── Survival Calculator -- should display prediction results (failed).png
+│   │   │   │   ├── Survival Calculator -- should have all the necessary input fields (failed).png
+│   │   ├── support/
+│   │   │   ├── commands.js
+│   │   │   ├── e2e.js
+│   │   ├── cypress.config.js
 │   ├── public/
-│   │   └── index.html
+│   │   ├── favicon.ico
+│   │   ├── index.html
 │   ├── src/
-│   │   ├── Assests/
-│   │   │   │  
-│   │   │   └── images files
+│   │   ├── assets/
+│   │   │   ├── aadi.png
+│   │   │   ├── aryan.png
+│   │   │   ├── avanish.png
+│   │   │   ├── bhanu.png
+│   │   │   ├── dataset.png
+│   │   │   ├── dataset.webp
+│   │   │   ├── gitlab-logo.png
+│   │   │   ├── header.png
+│   │   │   ├── nemish.png
+│   │   │   ├── pp.webp
+│   │   │   ├── rohit.png
+│   │   │   ├── ship.png
 │   │   ├── components/
-│   │   │   │  
 │   │   │   ├── HelloWorld.vue
 │   │   │   ├── PredictPage.vue
-│   │   │   └── Landing_page.vue
+│   │   │   ├── landing_page.vue
 │   │   ├── App.vue
-│   │   └── main.js
-│   ├── cypress/
-│   │   ├── integration/
-│   │   │   └── survival_calculator_spec.js
-│   │   ├── fixtures/
-│   │   ├── plugins/
-│   │   ├── support/
-│   │   ├── cypress.json
-│   │   └── package.json
-│   ├── Dockerfile
-│   └── package.json
-│
-├── docker-compose.yml
+│   │   ├── main.js
+│   ├── .gitignore
+│   ├── README.md
+│   ├── babel.config.js
+│   ├── dockerfile
+│   ├── jsconfig.json
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── vue.config.js
+├── .DS_Store
 ├── .gitlab-ci.yml
-└── README.md
+├── LICENSE
+├── README.md
+├── docker-compose.yml
 ```
 ## Requirements and Setup
 
