@@ -5,3 +5,4 @@ numpy
 scikit-learn
 httpx
 pytest
+requests

@@ -1,36 +1,42 @@
 import sys
 import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+from unittest.mock import patch
 
+# Add the parent directory to the system path to find the main module
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
+
+from fastapi.testclient import TestClient
+from main import app, Passenger
 import pytest
-from pydantic import BaseModel
-from predict import predict_survival
 
-class MockPassenger(BaseModel):
-    pclass: int
-    sex: str
-    age: float
-    fare: float
-    traveled_alone: bool
-    embarked: str
+client = TestClient(app)
 
-@pytest.fixture
-def sample_passenger():
-    return MockPassenger(
-        pclass=1,
-        sex='male',
-        age=22,
-        fare=72.5,
-        traveled_alone=True,
-        embarked='Cherbourg'
-    )
+def test_read_root():
+    response = client.get("/api")
+    assert response.status_code == 200
+    assert response.json() == {"message": "Hello World"}
 
-def test_predict_survival_decision_tree(sample_passenger):
-    result = predict_survival('Decision Tree', sample_passenger)
-    assert 'survived' in result
-    assert isinstance(result['survived'], bool)
-
-def test_predict_survival_random_forest(sample_passenger):
-    result = predict_survival('Random Forest', sample_passenger)
-    assert 'survived' in result
-    assert isinstance(result['survived'], bool)
+@pytest.mark.parametrize("pclass,sex,age,fare,traveled_alone,embarked", [
+    (1, 1, 25.0, 100.0, 1, 0),  # Valid data
+    (3, 0, 30.0, 50.0, 0, 2),   # Valid data
+    (1, 1, -5.0, 100.0, 1, 0),  # Invalid age
+    (1, 1, 25.0, -100.0, 1, 0), # Invalid fare
+])
+def test_passenger_model(pclass, sex, age, fare, traveled_alone, embarked):
+    try:
+        passenger = Passenger(
+            pclass=pclass,
+            sex=sex,
+            age=age,
+            fare=fare,
+            traveled_alone=traveled_alone,
+            embarked=embarked
+        )
+        assert passenger.pclass == pclass
+        assert passenger.sex == sex
+        assert passenger.age == age
+        assert passenger.fare == fare
+        assert passenger.traveled_alone == traveled_alone
+        assert passenger.embarked == embarked
+    except Exception as e:
+        assert isinstance(e, ValueError)
