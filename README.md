@@ -21,70 +21,73 @@ This project is part of the Summerterm 2024 AIN-B Software Engineering course le
 
 ## Project Structure
 ```
-Titanic Survival Calculator/
+titanic_web_service-main/
 ├── __pycache__/
 │   ├── backend.cpython-310.pyc
 │   ├── main.cpython-310.pyc
-│   ├── main.cpython-311.pyc
+│   └── main.cpython-311.pyc
 ├── backend/
 │   ├── __pycache__/
 │   │   ├── main.cpython-311.pyc
+│   │   ├── main.cpython-312 2.pyc
+│   │   ├── main.cpython-312.pyc
 │   │   ├── main.cpython-39.pyc
+│   │   ├── predict.cpython-312 2.pyc
+│   │   └── predict.cpython-312.pyc
 │   ├── dist/
 │   │   ├── css/
-│   │   │   ├── app.a2f58a13.css
+│   │   │   ├── app.5fed518f.css
+│   │   │   └── app.a2f58a13.css
 │   │   ├── img/
-│   │   │   ├── ship.e4049565.png
+│   │   │   ├── aadi.02a7f0ab.png
+│   │   │   ├── aryan.453d5392.png
+│   │   │   ├── avanish.f96d5188.png
+│   │   │   ├── bhanu.b242fc23.png
+│   │   │   ├── dataset.a5484bc2.png
+│   │   │   ├── gitlab-logo.db385ac.png
+│   │   │   ├── header.f3f1b282.png
+│   │   │   ├── nemish.5987e7f8.png
+│   │   │   ├── pp.f7e8cfa8.webp
+│   │   │   ├── rohit.165c520d.png
+│   │   │   └── ship.b0486ab9.png
 │   │   ├── js/
-│   │   │   ├── app.930f6ec9.js
-│   │   │   ├── app.930f6ec9.js.map
-│   │   │   ├── chunk-vendors.ee17c5bb.js
-│   │   │   ├── chunk-vendors.ee17c5bb.js.map
+│   │   │   ├── app.5fed518f.js
+│   │   │   └── app.a2f58a13.js
 │   │   ├── favicon.ico
-│   │   ├── index.html
-│   ├── models/
-│   │   ├── Decision Tree.pkl
-│   │   ├── Gaussian Naive Bayes.pkl
-│   │   ├── K-Nearest Neighbors.pkl
-│   │   ├── Logistic Regression.pkl
-│   │   ├── Perceptron.pkl
-│   │   ├── Random Forest.pkl
-│   │   ├── Stochastic Gradient Descent.pkl
-│   │   ├── Support Vector Machine.pkl
+│   │   └── index.html
 │   ├── tests/
-│   │   ├── integration/
-│   │   │   ├── test_prediction_api.py
-│   │   ├── unit/
-│   │   │   ├── test_passenger_data_validation.py
+│   │   ├── __pycache__/
+│   │   │   ├── test_01.cpython-310.pyc
+│   │   │   ├── test_01.cpython-39.pyc
+│   │   │   └── test_02.cpython-310.pyc
+│   │   ├── test_01.py
+│   │   └── test_02.py
 │   ├── .DS_Store
 │   ├── dockerfile
 │   ├── main.py
 │   ├── package-lock.json
-│   ├── requirements.txt
+│   └── requirements.txt
 ├── vue-frontend/
 │   ├── cypress/
 │   │   ├── e2e/
 │   │   │   ├── titanic/
-│   │   │   │   ├── landing_page.spec.cy.js
-│   │   │   │   ├── sample_test.cy.js
-│   │   │   │   ├── survival_calculator.spec.cy.js
+│   │   │   │   └── survival_calculator.spec.cy.js
 │   │   ├── fixtures/
-│   │   │   ├── example.json
+│   │   │   ├── titanic_survival_prediction.json
+│   │   │   ├── titanic_survival_result.json
 │   │   ├── screenshots/
-│   │   │   ├── landing_page.spec.cy.js/
-│   │   │   │   ├── Landing Page -- should display the landing page with correct elements (failed).png
-│   │   │   ├── sample_test.cy.js/
-│   │   │   │   ├── Sample Test -- should visit the app (failed).png
-│   │   │   ├── survival_calculator.spec.cy.js/
-│   │   │   │   ├── Survival Calculator -- should display prediction results (failed).png
-│   │   │   │   ├── Survival Calculator -- should have all the necessary input fields (failed).png
+│   │   │   ├── cypress/
+│   │   │   │   ├── e2e/
+│   │   │   │   │   ├── titanic/
+│   │   │   │   │   │   ├── survival_calculator.spec.cy.js/
+│   │   │   │   │   │   │   ├── Home Page.png
+│   │   │   │   │   │   │   └── Survival Calculator.png
 │   │   ├── support/
 │   │   │   ├── commands.js
-│   │   │   ├── e2e.js
-│   │   ├── cypress.config.js
+│   │   │   └── e2e.js
 │   ├── public/
 │   │   ├── favicon.ico
-│   │   ├── index.html
+│   │   └── index.html
 │   ├── src/
 │   │   ├── assets/
 │   │   │   ├── aadi.png
@@ -98,26 +101,18 @@ Titanic Survival Calculator/
 │   │   │   ├── nemish.png
 │   │   │   ├── pp.webp
 │   │   │   ├── rohit.png
-│   │   │   ├── ship.png
+│   │   │   └── ship.png
 │   │   ├── components/
 │   │   │   ├── HelloWorld.vue
 │   │   │   ├── PredictPage.vue
-│   │   │   ├── landing_page.vue
+│   │   │   └── landing_page.vue
 │   │   ├── App.vue
-│   │   ├── main.js
-│   ├── .gitignore
-│   ├── README.md
-│   ├── babel.config.js
-│   ├── dockerfile
-│   ├── jsconfig.json
-│   ├── package-lock.json
-│   ├── package.json
-│   ├── vue.config.js
+│   │   └── main.js
 ├── .DS_Store
 ├── .gitlab-ci.yml
 ├── LICENSE
 ├── README.md
-├── docker-compose.yml
+└── docker-compose.yml
 ```
 ## Requirements and Setup
 
