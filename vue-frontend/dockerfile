@@ -1,11 +1,11 @@
-# Use the official Node.js image
-FROM node:14
+# Use the official Cypress image with all dependencies
+FROM cypress/base:14.17.0
 
 # Set the working directory in the container
 WORKDIR /app
 
 # Copy the package.json and package-lock.json
-COPY package.json .
+COPY package.json package-lock.json ./
 
 # Install dependencies
 RUN npm install
@@ -20,7 +20,7 @@ RUN npm run build
 RUN npm install -g serve
 
 # Expose the port that the app runs on
-EXPOSE 5000
+EXPOSE 3000
 
 # Serve the built application
 CMD ["serve", "-s", "dist"]

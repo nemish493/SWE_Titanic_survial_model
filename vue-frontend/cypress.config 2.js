@@ -1,8 +1,9 @@
 const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
+  projectId: 'ty67n4',
   e2e: {
-    baseUrl: 'http://localhost:3000',
+    baseUrl: "http://localhost:3000",
     specPattern: 'cypress/e2e/**/*.cy.{js,jsx,ts,tsx}',
     setupNodeEvents(on, config) {
       on('after:spec', (spec, results) => {
