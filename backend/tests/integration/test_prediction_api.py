@@ -29,5 +29,5 @@ def test_surv_or_not(mock_post):
     assert response.status_code == 200
     assert response.json() == {"survived": True}
     mock_post.assert_called_once_with(
-        "http://127.0.0.1:8000/surv/model1", json=passenger_data
+        "http://127.0.0.1:8080/surv/model1", json=passenger_data
     )
