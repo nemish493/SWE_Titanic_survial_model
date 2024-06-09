@@ -34,7 +34,7 @@ async def surv_or_not(model_name: str, passenger: Passenger):
     print(model_name)
     passenger_dict = passenger.dict()  # Convert to dictionary
     print(type(passenger_dict))
-    response = requests.post(f"http://127.0.0.1:8000/surv/{model_name}", json=passenger_dict)
+    response = requests.post(f"http://127.0.0.1:8080/surv/{model_name}", json=passenger_dict)
     return response.json()
 
 @app.get("/api")
@@ -45,4 +45,4 @@ def read_root():
 app.mount("/", StaticFiles(directory="dist", html=True), name="static")
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8080)
+    uvicorn.run(app, host="127.0.0.1", port=8000)
