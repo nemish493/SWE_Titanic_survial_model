@@ -40,9 +40,9 @@ backend_tests:
     - echo "Starting backend and db services"
     - docker-compose up -d db
     - docker-compose up -d backend
-    - sleep 10  # Wait for the backend to be fully up
+    - sleep 20  # Wait for the backend to be fully up
     - echo "Running pytest tests"
-    - docker-compose exec backend_service_container /bin/sh -c "pip install -r requirements.txt && pytest --junitxml=pytest-report.xml"
+    - docker-compose exec backend /bin/sh -c "pip install -r requirements.txt && pytest --junitxml=pytest-report.xml"
   artifacts:
     when: always
     reports:
@@ -61,9 +61,9 @@ frontend_tests:
     - docker-compose up -d db
     - docker-compose up -d backend
     - docker-compose up -d frontend
-    - sleep 20  # Wait for the frontend and backend to be fully up
+    - sleep 40  # Wait for the frontend and backend to be fully up
     - echo "Running Cypress tests"
-    - docker-compose exec frontend_service_container /bin/sh -c "npm install && npx cypress run"
+    - docker-compose exec frontend /bin/sh -c "npm install && npx cypress run"
   artifacts:
     when: always
     paths:
