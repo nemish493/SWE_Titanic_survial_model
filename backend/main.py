@@ -37,10 +37,6 @@ async def surv_or_not(model_name: str, passenger: Passenger):
     response = requests.post(f"http://127.0.0.1:8080/surv/{model_name}", json=passenger_dict)
     return response.json()
 
-@app.get("/api")
-def read_root():
-    return {"message": "Hello World"}
-
 
 app.mount("/", StaticFiles(directory="dist", html=True), name="static")
 
