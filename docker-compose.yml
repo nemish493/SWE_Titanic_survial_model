@@ -1,0 +1,23 @@
+version: '3'
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    container_name: backend_service_container
+
+  frontend:
+    build: ./vue-frontend
+    ports:
+      - "3000:3000"
+    container_name: frontend_service_container
+    depends_on:
+      - backend
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"

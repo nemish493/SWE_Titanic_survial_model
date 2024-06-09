@@ -19,6 +19,106 @@ This project is part of the Summerterm 2024 AIN-B Software Engineering course le
   - Nemish Kyada : 22212034
   - Rohit Galani : 22209032
 
+## Project Structure
+```
+Titanic Survival Calculator/
+├── __pycache__/
+│   ├── backend.cpython-310.pyc
+│   ├── main.cpython-310.pyc
+│   ├── main.cpython-311.pyc
+├── backend/
+│   ├── __pycache__/
+│   │   ├── main.cpython-311.pyc
+│   │   ├── main.cpython-39.pyc
+│   ├── dist/
+│   │   ├── css/
+│   │   │   ├── app.a2f58a13.css
+│   │   ├── img/
+│   │   │   ├── ship.e4049565.png
+│   │   ├── js/
+│   │   │   ├── app.930f6ec9.js
+│   │   │   ├── app.930f6ec9.js.map
+│   │   │   ├── chunk-vendors.ee17c5bb.js
+│   │   │   ├── chunk-vendors.ee17c5bb.js.map
+│   │   ├── favicon.ico
+│   │   ├── index.html
+│   ├── models/
+│   │   ├── Decision Tree.pkl
+│   │   ├── Gaussian Naive Bayes.pkl
+│   │   ├── K-Nearest Neighbors.pkl
+│   │   ├── Logistic Regression.pkl
+│   │   ├── Perceptron.pkl
+│   │   ├── Random Forest.pkl
+│   │   ├── Stochastic Gradient Descent.pkl
+│   │   ├── Support Vector Machine.pkl
+│   ├── tests/
+│   │   ├── integration/
+│   │   │   ├── test_prediction_api.py
+│   │   ├── unit/
+│   │   │   ├── test_passenger_data_validation.py
+│   ├── .DS_Store
+│   ├── dockerfile
+│   ├── main.py
+│   ├── package-lock.json
+│   ├── requirements.txt
+├── vue-frontend/
+│   ├── cypress/
+│   │   ├── e2e/
+│   │   │   ├── titanic/
+│   │   │   │   ├── landing_page.spec.cy.js
+│   │   │   │   ├── sample_test.cy.js
+│   │   │   │   ├── survival_calculator.spec.cy.js
+│   │   ├── fixtures/
+│   │   │   ├── example.json
+│   │   ├── screenshots/
+│   │   │   ├── landing_page.spec.cy.js/
+│   │   │   │   ├── Landing Page -- should display the landing page with correct elements (failed).png
+│   │   │   ├── sample_test.cy.js/
+│   │   │   │   ├── Sample Test -- should visit the app (failed).png
+│   │   │   ├── survival_calculator.spec.cy.js/
+│   │   │   │   ├── Survival Calculator -- should display prediction results (failed).png
+│   │   │   │   ├── Survival Calculator -- should have all the necessary input fields (failed).png
+│   │   ├── support/
+│   │   │   ├── commands.js
+│   │   │   ├── e2e.js
+│   │   ├── cypress.config.js
+│   ├── public/
+│   │   ├── favicon.ico
+│   │   ├── index.html
+│   ├── src/
+│   │   ├── assets/
+│   │   │   ├── aadi.png
+│   │   │   ├── aryan.png
+│   │   │   ├── avanish.png
+│   │   │   ├── bhanu.png
+│   │   │   ├── dataset.png
+│   │   │   ├── dataset.webp
+│   │   │   ├── gitlab-logo.png
+│   │   │   ├── header.png
+│   │   │   ├── nemish.png
+│   │   │   ├── pp.webp
+│   │   │   ├── rohit.png
+│   │   │   ├── ship.png
+│   │   ├── components/
+│   │   │   ├── HelloWorld.vue
+│   │   │   ├── PredictPage.vue
+│   │   │   ├── landing_page.vue
+│   │   ├── App.vue
+│   │   ├── main.js
+│   ├── .gitignore
+│   ├── README.md
+│   ├── babel.config.js
+│   ├── dockerfile
+│   ├── jsconfig.json
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── vue.config.js
+├── .DS_Store
+├── .gitlab-ci.yml
+├── LICENSE
+├── README.md
+├── docker-compose.yml
+```
 ## Requirements and Setup
 
 ### Prerequisites
@@ -35,18 +135,18 @@ The project is divided into two repositories within the team's Gitlab group:
 
 Clone both repositories to your local machine.
 
-\`\`\`sh
+```sh
 git clone <web_application_service_repo>
 git clone <prediction_model_service_repo>
-\`\`\`
+```
 
 ### Building and Running the Application
 
 Navigate to the directory containing the Docker Compose file and run the following command to build and start the services:
 
-\`\`\`sh
+```sh
 docker-compose up --build
-\`\`\`
+```
 
 This command will:
 - Build Docker images for both the web application service and the prediction model service.
@@ -56,9 +156,9 @@ This command will:
 
 Once the services are up and running, open your web browser and navigate to:
 
-\`\`\`
+```
 https://localhost:8080
-\`\`\`
+```
 
 ## Application Structure
 
