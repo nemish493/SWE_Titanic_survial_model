@@ -2,14 +2,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from fastapi.staticfiles import StaticFiles
-from pickle import load
-import numpy as np
 import requests
 import uvicorn
 
-
 app = FastAPI()
-
 
 app.add_middleware(
     CORSMiddleware,
@@ -18,7 +14,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 class Passenger(BaseModel):
     pclass: int
@@ -30,13 +25,14 @@ class Passenger(BaseModel):
 
 @app.post("/surv_or_not/{model_name}")
 async def surv_or_not(model_name: str, passenger: Passenger):
-    print(type(passenger))
-    print(model_name)
     passenger_dict = passenger.dict()  # Convert to dictionary
     print(type(passenger_dict))
     response = requests.post(f"http://127.0.0.1:8000/surv/{model_name}", json=passenger_dict)
     return response.json()
 
+@app.get("/api")
+def read_root():
+    return {"message": "Hello World"}
 
 app.mount("/", StaticFiles(directory="dist", html=True), name="static")
 
