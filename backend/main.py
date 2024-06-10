@@ -23,6 +23,7 @@ class Passenger(BaseModel):
     traveled_alone: int
     embarked: int
 
+
 @app.post("/surv_or_not/{model_name}")
 async def surv_or_not(model_name: str, passenger: Passenger):
     passenger_dict = passenger.dict()  # Convert to dictionary

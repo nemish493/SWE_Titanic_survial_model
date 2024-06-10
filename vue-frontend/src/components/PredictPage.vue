@@ -45,9 +45,9 @@
             <label for="dropdown1">Passenger Class</label>
             <select id="dropdown1" v-model="dropdown1" required>
               <option disabled value="">Please select one</option>
-              <option value="Option 1A">First</option>
-              <option value="Option 1B">Second</option>
-              <option value="Option 1C">Third</option>
+              <option value="1">First</option>
+              <option value="2">Second</option>
+              <option value="3">Third</option>
             </select>
           </div>
 
@@ -55,9 +55,8 @@
             <label for="dropdown2">Sex</label>
             <select id="dropdown2" v-model="dropdown2" required>
               <option disabled value="">Please select one</option>
-              <option value="Option 2A">Male</option>
-              <option value="Option 2B">Female</option>
-              <option value="Option 2C">Other</option>
+              <option value="0">Male</option>
+              <option value="1">Female</option>
             </select>
           </div>
 
@@ -65,9 +64,9 @@
             <label for="dropdown3">Embarked</label>
             <select id="dropdown3" v-model="dropdown3" required>
               <option disabled value="">Please select one</option>
-              <option value="Option 3A">Cherbourg</option>
-              <option value="Option 3B">Queenstown</option>
-              <option value="Option 3C">Southampton</option>
+              <option value="0">Cherbourg</option>
+              <option value="1">Queenstown</option>
+              <option value="2">Southampton</option>
             </select>
           </div>
 
@@ -78,18 +77,33 @@
           </div>
 
           <div class="form-group">
-            <label for="slider2">Fare $ (1-1000):</label>
-            <input type="range" id="slider2" v-model.number="slider2" min="1" max="1000" required />
+            <label for="slider2">Fare $ (1-520):</label>
+            <input type="range" id="slider2" v-model.number="slider2" min="1" max="520" required />
             <span>{{ slider2 }}</span>
           </div>
+
+          <div class="form-group">
+            <label for="dropdown5">Travelled Alone</label>
+            <select id="dropdown5" v-model="dropdown1" required>
+              <option disabled value="">Please select one</option>
+              <option value="0">Yes</option>
+              <option value="1">No</option>
+            </select>
+          </div>
+
           <div class="foot">
             <div class="form-group">
               <label for="dropdown4">Model Selection</label>
               <select id="dropdown4" v-model="dropdown4" required>
                 <option disabled value="">Please select one</option>
-                <option value="Option 4A">KNN</option>
-                <option value="Option 4B">Random Forest</option>
-                <option value="Option 4C">Decision Tree</option>
+                <option value="logistic_regression">Logistic Regression</option>
+                <option value="support_vector_machine">Support Vector Machine</option>
+                <option value="k_nearest_neighbors">K-Nearest Neighbour</option>
+                <option value="gaussian_naive_bayes">Guassian Naive Bayes</option>
+                <option value="perceptron">Perceptron</option>
+                <option value="stochastic_gradient_descent">Stochastic Gradient Descent</option>
+                <option value="decision_tree">Decision Tree</option>
+                <option value="random_forest">Random Forest</option>
               </select>
             </div>
 
@@ -116,20 +130,36 @@ export default {
       dropdown2: "",
       dropdown3: "",
       dropdown4: "",
+      dropdown5: "",
       slider1: 1,
       slider2: 1,
+
     };
   },
   methods: {
     async submitForm() {
       try {
-        const response = await axios.post("http://127.0.0.1:8000/submit-form", {
-          dropdown1: this.dropdown1,
-          dropdown2: this.dropdown2,
-          dropdown3: this.dropdown3,
-          dropdown4: this.dropdown4,
-          slider1: this.slider1,
-          slider2: this.slider2,
+        const response = await axios.post(`http://127.0.0.1:8080/surv_or_not/${this.dropdown4}`, {
+          pclass: this.dropdown1,
+          sex: this.dropdown2,
+          age: this.slider1,
+          fare: this.slider2,
+          traveled_alone: this.dropdown5,
+          embarked: this.dropdown3,
+          
+          
+          
+         
+
+          // xyz : {
+          // "pclass": pclass,
+          // "sex": sex,
+          // "age": age,
+          // "fare": fare,
+          // "traveled_alone": traveled_alone,
+          // "embarked": embarked
+          // }
+          
         });
         console.log(response.data);
       } catch (error) {
