@@ -24,19 +24,12 @@
           <h1>History</h1>
           <p>Past 5 User search history</p>
         </div>
-        <div class="display">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur
-          consequuntur quisquam sequi amet veniam eius laudantium aut
-          perspiciatis atque earum id quibusdam velit ad vero tenetur,
-          voluptatibus debitis quo perferendis voluptates? Non aut molestiae,
-          distinctio deserunt voluptatibus, omnis assumenda minima, reiciendis
-          nulla minus quisquam ipsa est dolorem illum et. Ullam laudantium
-          molestiae sapiente magnam tenetur eligendi ex. Ullam dicta ipsa est
-          totam tenetur vero animi beatae optio molestias cum debitis, ab sint,
-          deserunt, autem minima ea atque. Corrupti recusandae quia doloremque
-          perspiciatis voluptatem accusamus, consectetur et excepturi provident!
-          Voluptas voluptates qui deserunt, commodi doloremque ea? Officia
-          cupiditate harum suscipit tempore.
+        <div class="display" v-if="history.length">
+          <div v-for="(entry, index) in history" :key="index">
+            <div>Passenger Class: {{ entry.pclass }} , Sex: {{ entry.sex }} , Age: {{ entry.age }} , Fare: {{ entry.fare }} , Travelled alone: {{ entry.traveled_alone }} , Embarked: {{ entry.embarked }} , Model: {{ entry.model }} , Result: {{ entry.result }}
+            </div>
+            <br>
+          </div>
         </div>
       </div>
       <div class="form">
@@ -84,10 +77,10 @@
 
           <div class="form-group">
             <label for="dropdown5">Travelled Alone</label>
-            <select id="dropdown5" v-model="dropdown1" required>
+            <select id="dropdown5" v-model="dropdown5" required>
               <option disabled value="">Please select one</option>
-              <option value="0">Yes</option>
-              <option value="1">No</option>
+              <option value="1">Yes</option>
+              <option value="0">No</option>
             </select>
           </div>
 
@@ -112,8 +105,13 @@
 
           </div>
 
-
+          <div v-if="result !== null">
+          <h3>Result:</h3>
+          <span >{{ ans }}</span>
+         </div>
         </form>
+
+        
 
       </div>
     </main>
@@ -126,42 +124,58 @@ import axios from "axios";
 export default {
   data() {
     return {
-      dropdown1: "",
-      dropdown2: "",
-      dropdown3: "",
-      dropdown4: "",
-      dropdown5: "",
+      dropdown1: 1,
+      dropdown2: 1,
+      dropdown3: 1,
+      dropdown4: 1,
+      dropdown5: 1,
       slider1: 1,
       slider2: 1,
-
+      result: null,
+      ans:null,
+      history:[],
+      current:{}
     };
   },
   methods: {
     async submitForm() {
       try {
         const response = await axios.post(`http://127.0.0.1:8080/surv_or_not/${this.dropdown4}`, {
-          pclass: this.dropdown1,
-          sex: this.dropdown2,
-          age: this.slider1,
-          fare: this.slider2,
-          traveled_alone: this.dropdown5,
-          embarked: this.dropdown3,
+          "pclass": this.dropdown1,
+          "sex": this.dropdown2,
+          "age": this.slider1,
+          "fare": this.slider2,
+          "traveled_alone": this.dropdown5,
+          "embarked": this.dropdown3,
           
-          
-          
-         
 
-          // xyz : {
-          // "pclass": pclass,
-          // "sex": sex,
-          // "age": age,
-          // "fare": fare,
-          // "traveled_alone": traveled_alone,
-          // "embarked": embarked
-          // }
           
         });
-        console.log(response.data);
+        this.result = response.data["survived"];
+        console.log(this.result);
+        if (this.result){
+          this.ans="The passenger will survive."
+        }
+        else{
+          this.ans="The passenger will not survive."
+        }
+
+        this.current= {
+          "pclass": this.dropdown1,
+          "sex": this.dropdown2,
+          "age": this.slider1,
+          "fare": this.slider2,
+          "traveled_alone": this.dropdown5,
+          "embarked": this.dropdown3,
+          "model":this.dropdown4,
+          "result": this.ans
+          
+        }
+        this.history.unshift(this.current)
+        if (this.history.length > 5) {
+          this.history.pop();
+        }
+        
       } catch (error) {
         console.error("Error submitting form:", error);
       }
