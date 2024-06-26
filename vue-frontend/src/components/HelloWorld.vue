@@ -62,8 +62,8 @@
             </div>
             <div class="team-member">
                 <h3>Nemish Kyada</h3>
-                <p><strong>Matriculation Number:</strong> 123456</p>
-                <p><strong>Role:</strong> Frontend Developer</p>
+                <p><strong>Matriculation Number:</strong> 22212034</p>
+                <p><strong>Role:</strong> Software Tester</p>
                 <p><strong>Contribution:</strong> Designed the UI/UX of the web application and implemented the frontend using VueJS.</p>
             </div>
             <div class="team-member">
