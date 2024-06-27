@@ -40,7 +40,7 @@ backend_tests:
     - echo "Starting backend and db services"
     - docker-compose up -d db
     - docker-compose up -d backend
-    - sleep 20  # Wait for the backend to be fully up
+    - sleep 25  # Wait for the backend to be fully up
     - echo "Running pytest tests"
     - docker-compose exec backend /bin/sh -c "pip install -r requirements.txt && pytest --junitxml=pytest-report.xml"
   artifacts:
