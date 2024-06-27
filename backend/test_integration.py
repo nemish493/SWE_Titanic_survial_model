@@ -9,7 +9,7 @@ def test_main_backend_to_model_backend():
     passenger_data = {
         "pclass": 1,
         "sex": 0,
-        "age": 29,
+        "age": 30,
         "fare": 100,
         "traveled_alone": 1,
         "embarked": 2
