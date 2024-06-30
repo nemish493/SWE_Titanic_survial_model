@@ -40,17 +40,17 @@ backend_tests:
     - echo "Starting backend and db services"
     - docker-compose up -d db
     - docker-compose up -d backend
-    - sleep 30  # Increased sleep time to ensure services are fully up
+    - sleep 60  # Increased sleep time to ensure services are fully up
     - echo "Running pytest tests"
     - docker-compose ps
     - docker-compose logs backend  # Added logs to troubleshoot backend issues
-    - docker-compose exec backend /bin/sh -c "pip install -r requirements.txt && pytest --junitxml=/pytest-report.xml"
+    - docker-compose exec backend /bin/sh -c "pip install -r requirements.txt && pytest --junitxml=/app/pytest-report.xml"
   artifacts:
     when: always
     reports:
-      junit: pytest-report.xml
+      junit: backend/pytest-report.xml
     paths:
-      - pytest-report.xml
+      - backend/pytest-report.xml
 
 # Job for running frontend Cypress tests
 frontend_tests:

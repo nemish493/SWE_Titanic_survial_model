@@ -6,3 +6,4 @@ scikit-learn
 httpx
 pytest
 requests
+logging

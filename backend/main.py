@@ -5,6 +5,9 @@ from fastapi.staticfiles import StaticFiles
 import requests
 import uvicorn
 import json
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 app = FastAPI()
 
 app.add_middleware(
