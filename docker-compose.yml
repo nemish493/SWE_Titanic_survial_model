@@ -28,3 +28,16 @@ services:
       POSTGRES_PASSWORD: postgres
     ports:
       - "5433:5432"
+
+  model_backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.model_backend
+    ports:
+      - "8000:8000"
+    environment:
+      FLASK_ENV: development
+    depends_on:
+      - db
+    volumes:
+      - .:/app
