@@ -1,10 +1,9 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from fastapi.staticfiles import StaticFiles
 import requests
 import uvicorn
-import json
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
@@ -26,15 +25,18 @@ class Passenger(BaseModel):
     traveled_alone: int
     embarked: int
 
-
 @app.post("/surv_or_not/{model_name}")
 async def surv_or_not(model_name: str, passenger: Passenger):
     passenger_dict = passenger.dict()  # Convert to dictionary
-    print(passenger_dict)
-    # Change the URL to use the service name of the model backend container
-    response = requests.post(f"http://model_backend:8000/surv/{model_name}", json=passenger_dict)
-    print(response.json())
-    return response.json()
+    logging.debug(f"Request payload: {passenger_dict}")
+    try:
+        response = requests.post(f"http://127.0.0.1:8000/surv/{model_name}", json=passenger_dict)
+        response.raise_for_status()
+        logging.debug(f"Model backend response: {response.json()}")
+        return response.json()
+    except requests.RequestException as e:
+        logging.error(f"Error connecting to model backend: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Model backend connection failed: {str(e)}")
 
 @app.get("/api")
 def read_root():
