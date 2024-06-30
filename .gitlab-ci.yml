@@ -44,7 +44,7 @@ backend_tests:
     - echo "Running pytest tests"
     - docker-compose ps
     - docker-compose logs backend  # Added logs to troubleshoot backend issues
-    - docker-compose exec backend /bin/sh -c "pip install -r requirements.txt && pytest --junitxml=/app/pytest-report.xml"
+    - docker-compose exec backend /bin/sh -c "pip install -r requirements.txt && pytest --junitxml=/app/backend/pytest-report.xml"
   artifacts:
     when: always
     reports:

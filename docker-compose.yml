@@ -1,10 +1,12 @@
-version: '3'
+version: '3.8'
 services:
   backend:
     build: ./backend
     ports:
       - "8080:8080"
     container_name: backend_service_container
+    volumes:
+      - ./backend:/app
     healthcheck:
       test: ["CMD", "curl", "-f", "http://127.0.0.1:8080"]
       interval: 30s
