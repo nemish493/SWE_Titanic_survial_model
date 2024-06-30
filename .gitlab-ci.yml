@@ -40,10 +40,13 @@ backend_tests:
     - echo "Starting backend and db services"
     - docker-compose up -d db
     - docker-compose up -d backend
-    - sleep 60  # Increased sleep time to ensure services are fully up
-    - echo "Running pytest tests"
+    - echo "Waiting for backend service to be healthy"
     - docker-compose ps
+    - docker-compose logs backend
+    - sleep 60  # Increased sleep time to ensure services are fully up
+    - docker-compose ps  # Check the status again
     - docker-compose logs backend  # Added logs to troubleshoot backend issues
+    - echo "Running pytest tests"
     - docker-compose exec backend /bin/sh -c "pip install -r requirements.txt && pytest --junitxml=/app/backend/pytest-report.xml"
   artifacts:
     when: always
@@ -63,7 +66,7 @@ frontend_tests:
     - docker-compose up -d db
     - docker-compose up -d backend
     - docker-compose up -d frontend
-    - sleep 40  # Wait for the frontend and backend to be fully up
+    - sleep 60  # Wait for the frontend and backend to be fully up
     - echo "Running Cypress tests"
     - docker-compose exec frontend /bin/sh -c "npm install && npx cypress run"
   artifacts:
