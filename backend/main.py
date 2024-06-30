@@ -31,7 +31,8 @@ class Passenger(BaseModel):
 async def surv_or_not(model_name: str, passenger: Passenger):
     passenger_dict = passenger.dict()  # Convert to dictionary
     print(passenger_dict)
-    response = requests.post(f"http://127.0.0.1:8000/surv/{model_name}", json=passenger_dict)
+    # Change the URL to use the service name of the model backend container
+    response = requests.post(f"http://model_backend:8000/surv/{model_name}", json=passenger_dict)
     print(response.json())
     return response.json()
 

@@ -37,7 +37,11 @@ services:
       - "8000:8000"
     environment:
       FLASK_ENV: development
+    secrets:
+      - gitcredentials
     depends_on:
       - db
-    volumes:
-      - .:/app
+
+secrets:
+  gitcredentials:
+    file: .git-credentials

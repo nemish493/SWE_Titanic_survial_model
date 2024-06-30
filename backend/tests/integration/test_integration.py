@@ -1,6 +1,7 @@
 import pytest
 import requests
 
+# Replace with the actual URLs of your deployed services
 MAIN_BACKEND_URL = "http://127.0.0.1:8080"
 MODEL_BACKEND_URL = "http://127.0.0.1:8000"
 
