@@ -32,14 +32,14 @@ build_model_backend:
 
 build_web_backend:
   stage: build
+  image: docker:latest
   script:
-    - echo "Contents of the backend directory:"
-    - ls -la backend
     - echo "Building backend image"
     - docker-compose build backend
 
 build_frontend:
   stage: build
+  image: docker:latest
   script:
     - echo "Building frontend image"
     - docker-compose build frontend
