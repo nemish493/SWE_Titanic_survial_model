@@ -1,13 +1,15 @@
-stages:
-  - build
-  - test
+image: docker:latest
+
+services:
+  - name: docker:dind
+    command: ["--mtu=1400"]
+    entrypoint: ["dockerd-entrypoint.sh"]
 
 variables:
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: "/certs"
-
-services:
-  - docker:dind
+  DOCKER_HOST: tcp://docker:2375/
+  DOCKER_TLS_VERIFY: "1"
 
 before_script:
   - apk add --no-cache git curl
@@ -16,43 +18,40 @@ before_script:
   - echo "Environment Variables:"
   - env
 
+stages:
+  - build
+  - test
+
 build_model_backend:
   stage: build
-  image: docker:latest
   script:
     - echo "Cloning model service repository"
     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
-    - echo "Contents of the current directory:"
-    - ls -la
-    - echo "Contents of the titanic_model_service directory:"
-    - ls -la titanic_model_service
     - cd titanic_model_service
     - echo "Building model service image"
     - docker-compose build model_service
 
 build_web_backend:
   stage: build
-  image: docker:latest
   script:
     - echo "Building backend image"
     - docker-compose build backend
 
 build_frontend:
   stage: build
-  image: docker:latest
   script:
     - echo "Building frontend image"
     - docker-compose build frontend
 
 model_service_tests:
   stage: test
-  image: docker:latest
   script:
     - echo "Cloning model service repository"
     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
     - cd titanic_model_service
     - echo "Stopping any existing containers"
-    - docker-compose down --remove-orphans
+    - docker-compose down --remove-orphans || true
+    - docker rm -f $(docker ps -a -q) || true
     - echo "After docker-compose down, docker ps -a:"
     - docker ps -a
     - echo "Starting model service"
@@ -69,10 +68,10 @@ model_service_tests:
 
 backend_tests:
   stage: test
-  image: docker:latest
   script:
     - echo "Stopping any existing containers"
-    - docker-compose down --remove-orphans
+    - docker-compose down --remove-orphans || true
+    - docker rm -f $(docker ps -a -q) || true
     - echo "After docker-compose down, docker ps -a:"
     - docker ps -a
     - echo "Starting backend service"
@@ -91,10 +90,10 @@ backend_tests:
 
 frontend_tests:
   stage: test
-  image: docker:latest
   script:
     - echo "Stopping any existing containers"
-    - docker-compose down --remove-orphans
+    - docker-compose down --remove-orphans || true
+    - docker rm -f $(docker ps -a -q) || true
     - echo "After docker-compose down, docker ps -a:"
     - docker ps -a
     - echo "Starting frontend services"
