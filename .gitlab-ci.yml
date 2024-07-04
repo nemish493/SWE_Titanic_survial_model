@@ -50,9 +50,9 @@ model_service_tests:
     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
     - cd titanic_model_service  # Change to the cloned directory
     - echo "Starting model service"
-    - docker-compose down  # Ensure any previous services are stopped
+    - docker-compose down --remove-orphans  # Ensure any previous services are stopped
     - docker-compose up -d server
-    - sleep 30  # Wait for the model service to be fully up
+    - sleep 60  # Wait for the model service to be fully up
     - echo "Running model service pytest tests"
     - docker-compose exec server sh -c "pip install -r requirements.txt && pytest tests --junitxml=/app/test_report/pytest-report.xml"
   artifacts:
@@ -72,20 +72,18 @@ backend_tests:
     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
     - cd titanic_model_service  # Change to the cloned directory
     - echo "Starting model service"
-    - docker-compose down  # Ensure any previous services are stopped
+    - docker-compose down --remove-orphans  # Ensure any previous services are stopped
     - docker-compose up -d server
     - cd ..
-    - sleep 30  # Wait for the model service to be fully up
+    - sleep 60  # Wait for the model service to be fully up
     - echo "Starting backend service"
     - docker-compose up -d backend
     - echo "Waiting for backend service to be healthy"
-    - docker-compose ps
-    - docker-compose logs backend
     - sleep 60  # Increased sleep time to ensure services are fully up
     - docker-compose ps  # Check the status again
     - docker-compose logs backend  # Added logs to troubleshoot backend issues
     - echo "Running pytest tests"
-    - docker-compose exec backend /bin/sh -c "pip install -r requirements.txt && pytest --junitxml=/app/backend/pytest-report.xml"
+    - docker-compose exec backend sh -c "pip install -r requirements.txt && pytest --junitxml=/app/backend/pytest-report.xml"
   artifacts:
     when: always
     reports:
@@ -103,16 +101,16 @@ frontend_tests:
     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
     - cd titanic_model_service  # Change to the cloned directory
     - echo "Starting model service"
-    - docker-compose down  # Ensure any previous services are stopped
+    - docker-compose down --remove-orphans  # Ensure any previous services are stopped
     - docker-compose up -d server
     - cd ..
-    - sleep 30  # Wait for the model service to be fully up
+    - sleep 60  # Wait for the model service to be fully up
     - echo "Starting backend and frontend services"
     - docker-compose up -d backend
     - docker-compose up -d frontend
     - sleep 60  # Wait for the frontend and backend to be fully up
     - echo "Running Cypress tests"
-    - docker-compose exec frontend /bin/sh -c "npm install && npx cypress run"
+    - docker-compose exec frontend sh -c "npm install && npx cypress run"
   artifacts:
     when: always
     paths:
