@@ -28,7 +28,7 @@ services:
       context: ../titanic_model_service
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"
+      - "8000:8001"  # Changed the port to avoid conflicts
     environment:
       - FLASK_ENV=development
     volumes:
