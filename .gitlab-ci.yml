@@ -17,13 +17,6 @@ before_script:
   - docker info
   - echo "Environment Variables:"
   - env
-  - docker ps -a
-  - docker stop $(docker ps -aq) || true
-  - docker rm $(docker ps -aq) || true
-  - docker network prune -f
-  - docker volume prune -f
-  - echo "After cleanup, docker ps -a:"
-  - docker ps -a
 
 build_model_backend:
   stage: build
