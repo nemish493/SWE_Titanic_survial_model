@@ -1,0 +1,111 @@
+pipeline:
+stages:
+  - build
+  - test
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: "/certs"
+
+services:
+  - docker:dind
+
+before_script:
+  - apk add --no-cache git curl
+  - git config --global url."https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de".insteadOf "https://mygit.th-deg.de"
+  - docker info
+  - echo "Environment Variables:"
+  - env
+
+build_model_backend:
+  stage: build
+  image: docker:latest
+  script:
+    - echo "Cloning model service repository"
+    - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
+    - echo "Contents of the current directory:"
+    - ls -la
+    - echo "Contents of the titanic_model_service directory:"
+    - ls -la titanic_model_service
+    - cd titanic_model_service
+    - echo "Building model service image"
+    - docker-compose build model_service
+
+build_web_backend:
+  stage: build
+  image: docker:latest
+  script:
+    - echo "Building backend image"
+    - docker-compose build backend
+
+build_frontend:
+  stage: build
+  image: docker:latest
+  script:
+    - echo "Building frontend image"
+    - docker-compose build frontend
+
+model_service_tests:
+  stage: test
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - echo "Cloning model service repository"
+    - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
+    - cd titanic_model_service
+    - echo "Stopping any existing containers"
+    - docker-compose down --remove-orphans
+    - echo "Starting model service"
+    - docker-compose up -d model_service
+    - sleep 60  # Wait for the model service to be fully up
+    - echo "Running model service pytest tests"
+    - docker-compose exec model_service sh -c "pip install -r requirements.txt && pytest tests --junitxml=/app/test_report/pytest-report.xml"
+  artifacts:
+    when: always
+    reports:
+      junit: titanic_model_service/test_report/pytest-report.xml
+    paths:
+      - titanic_model_service/test_report/pytest-report.xml
+
+backend_tests:
+  stage: test
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - echo "Stopping any existing containers"
+    - docker-compose down --remove-orphans
+    - echo "Starting backend service"
+    - docker-compose up -d backend
+    - echo "Waiting for backend service to be healthy"
+    - sleep 60  # Wait for backend service to be fully up
+    - docker-compose ps  # Check the status again
+    - docker-compose logs backend  # Added logs to troubleshoot backend issues
+    - echo "Running pytest tests"
+    - docker-compose exec backend sh -c "pip install -r requirements.txt && pytest --junitxml=/app/backend/pytest-report.xml"
+  artifacts:
+    when: always
+    reports:
+      junit: backend/pytest-report.xml
+    paths:
+      - backend/pytest-report.xml
+
+frontend_tests:
+  stage: test
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - echo "Stopping any existing containers"
+    - docker-compose down --remove-orphans
+    - echo "Starting frontend services"
+    - docker-compose up -d frontend
+    - sleep 60  # Wait for the frontend and backend to be fully up
+    - echo "Running Cypress tests"
+    - docker-compose exec frontend sh -c "npm install && npx cypress run"
+  artifacts:
+    when: always
+    paths:
+      - vue-frontend/cypress/screenshots
+      - vue-frontend/cypress/videos
