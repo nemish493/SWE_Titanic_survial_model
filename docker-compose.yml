@@ -39,6 +39,13 @@ services:
       timeout: 10s
       retries: 5
 
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16
+
 secrets:
   gitcredentials:
     file: .git-credentials
