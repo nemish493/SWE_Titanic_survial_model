@@ -89,16 +89,7 @@ frontend_tests:
   services:
     - docker:dind
   script:
-    - echo "Cloning model service repository"
-    - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
-    - cd titanic_model_service  # Change to the cloned directory
-    - echo "Starting model service"
-    - docker-compose down --remove-orphans  # Ensure any previous services are stopped
-    - docker-compose up -d model_service
-    - cd ..
-    - sleep 60  # Wait for the model service to be fully up
-    - echo "Starting backend and frontend services"
-    - docker-compose up -d backend
+    - echo "Starting frontend services"
     - docker-compose up -d frontend
     - sleep 60  # Wait for the frontend and backend to be fully up
     - echo "Running Cypress tests"
