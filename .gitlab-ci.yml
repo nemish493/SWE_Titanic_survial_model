@@ -41,7 +41,7 @@ build_model_backend:
     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
     - cd titanic_model_service
     - echo "Building model service image"
-    - docker-compose -f docker-compose-model.yml build model_service
+    - docker-compose -d build model_service
 
 build_web_backend:
   stage: build
