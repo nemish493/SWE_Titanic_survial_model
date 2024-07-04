@@ -34,14 +34,14 @@ services:
 
   model_service:
     build:
-      context: ./titanic_model_service
+      context: ../titanic_model_service
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
     environment:
       - FLASK_ENV=development
     volumes:
-      - ./titanic_model_service:/app
+      - ../titanic_model_service:/app
     depends_on:
       - db
     healthcheck:
