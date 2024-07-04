@@ -10,6 +10,8 @@ services:
   - docker:dind
 
 before_script:
+  - apk add --no-cache git
+  - git config --global url."https://<as23727>:${glpat-7rtgxSNTYvuABsrezV8A}@mygit.th-deg.de".insteadOf "https://mygit.th-deg.de"
   - docker info
   - echo "Environment Variables:"
   - env
