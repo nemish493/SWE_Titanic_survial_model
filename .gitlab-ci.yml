@@ -1,25 +1,15 @@
 image: docker:latest
 
-services:
-  - name: docker:dind
-    command: ["--tls=false"]
-
-variables:
-  DOCKER_DRIVER: overlay2
-  DOCKER_TLS_CERTDIR: ""
-  DOCKER_HOST: tcp://docker:2375/
-  DOCKER_TLS_VERIFY: "0"
-
-before_script:
-  - apk add --no-cache git curl
-  - git config --global url."https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de".insteadOf "https://mygit.th-deg.de"
-  - docker info
-  - echo "Environment Variables:"
-  - env
-
 stages:
   - build
   - test
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: "/certs"
+
+services:
+  - docker:dind
 
 build_model_backend:
   stage: build
