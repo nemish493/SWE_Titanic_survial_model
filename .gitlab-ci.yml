@@ -42,10 +42,6 @@ build_model_backend:
   script:
     - echo "Cloning model service repository"
     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
-    - echo "Contents of the current directory:"
-    - ls -la
-    - echo "Contents of the titanic_model_service directory:"
-    - ls -la titanic_model_service
     - cd titanic_model_service
     - echo "Building model service image"
     - docker-compose build model_service
@@ -73,6 +69,9 @@ model_service_tests:
     - echo "Cloning model service repository"
     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
     - cd titanic_model_service
+    - echo "Stopping any existing containers"
+    - docker-compose down --remove-orphans || true
+    - docker rm -f $(docker ps -a -q) || true  # Ensure all containers are removed
     - echo "Starting model service"
     - docker-compose up -d model_service
     - sleep 60  # Wait for the model service to be fully up
@@ -91,6 +90,9 @@ backend_tests:
   services:
     - docker:dind
   script:
+    - echo "Stopping and removing existing containers to avoid conflicts"
+    - docker-compose down --remove-orphans || true
+    - docker rm -f $(docker ps -a -q) || true  # Ensure all containers are removed
     - echo "Starting backend service"
     - docker-compose up -d backend
     - echo "Waiting for backend service to be healthy"
@@ -112,6 +114,9 @@ frontend_tests:
   services:
     - docker:dind
   script:
+    - echo "Stopping and removing existing containers to avoid conflicts"
+    - docker-compose down --remove-orphans || true
+    - docker rm -f $(docker ps -a -q) || true  # Ensure all containers are removed
     - echo "Starting frontend service"
     - docker-compose up -d frontend
     - echo "Running Cypress tests"
