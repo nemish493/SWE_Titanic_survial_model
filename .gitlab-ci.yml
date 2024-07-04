@@ -13,9 +13,29 @@ before_script:
   - docker info
   - echo "Environment Variables:"
   - env
-  - docker network prune -f  # Clean up any previous networks
-  - docker container prune -f  # Clean up any previous containers
-  - docker volume prune -f  # Clean up any previous volumes
+  - echo "Cleaning up Docker resources..."
+  - |  # Adding retry mechanism for network prune
+      for i in {1..5}; do
+        docker network prune -f && break || sleep 10;
+      done
+  - docker container prune -f || true
+  - docker volume prune -f || true
+
+stages:
+  - cleanup
+  - build
+  - test
+
+cleanup_docker:
+  stage: cleanup
+  image: docker:latest
+  script:
+    - echo "Cleaning up Docker resources before starting the build"
+    - for i in {1..5}; do
+        docker network prune -f && break || sleep 10;
+      done
+    - docker container prune -f || true
+    - docker volume prune -f || true
 
 build_model_backend:
   stage: build
