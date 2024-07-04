@@ -19,8 +19,6 @@ before_script:
     done
   - docker container prune -f || true
   - docker volume prune -f || true
-  - echo "Ensure cleanup script is executable"
-  - chmod +x cleanup.sh
 
 stages:
   - cleanup
@@ -31,7 +29,7 @@ cleanup_docker:
   stage: cleanup
   image: docker:latest
   script:
-    - ./clean-report/cleanup.sh
+    - ./cleanup.sh
 
 build_model_backend:
   stage: build
@@ -63,7 +61,7 @@ model_service_tests:
   services:
     - docker:dind
   script:
-    - ./clean-report/cleanup.sh
+    - ./cleanup.sh
     - echo "Cloning model service repository"
     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
     - cd titanic_model_service
@@ -85,7 +83,7 @@ backend_tests:
   services:
     - docker:dind
   script:
-    - ./clean-report/cleanup.sh
+    - ./cleanup.sh
     - echo "Starting backend service"
     - docker-compose up -d backend
     - echo "Waiting for backend service to be healthy"
@@ -107,7 +105,7 @@ frontend_tests:
   services:
     - docker:dind
   script:
-    - ./clean-report/cleanup.sh
+    - ./cleanup.sh
     - echo "Starting frontend service"
     - docker-compose up -d frontend
     - echo "Running Cypress tests"
