@@ -20,10 +20,6 @@ before_script:
   - git config --global url."https://${CI_JOB_TOKEN}:$CI_JOB_TOKEN@mygit.th-deg.de".insteadOf "https://mygit.th-deg.de"
   - echo "Waiting for Docker to be ready..."
   - for i in $(seq 1 30); do docker info && break || (echo "Waiting for Docker to be ready ($i/30)..." && sleep 1); done
-  - echo "Stopping any existing containers"
-  - if [ "$(docker ps -q)" ]; then docker ps -q | xargs docker stop; fi
-  - if [ "$(docker ps -aq)" ]; then docker ps -aq | xargs docker rm; fi
-  - docker network prune -f
 
 build_model_backend:
   stage: build
@@ -59,7 +55,48 @@ model_service_tests:
     - echo "Cloning model service repository"
     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
     - cd titanic_model_service
-    - echo "Stopping any existing containers"
-    - docker-compose down --remove-orphans || true
-    - if [ "$(docker ps -q)" ]; then docker ps -q | xargs docker stop; fi
-    - if [ "$(docker ps -aq)" ]; then docker ps -aq
+    - echo "Starting model service"
+    - docker-compose up -d model_service
+    - sleep 60  # Wait for the model service to be fully up
+    - echo "Running model service pytest tests"
+    - docker-compose exec model_service sh -c "pip install -r requirements.txt && pytest tests --junitxml=/app/test_report/pytest-report.xml"
+  artifacts:
+    when: always
+    reports:
+      junit: titanic_model_service/test_report/pytest-report.xml
+    paths:
+      - titanic_model_service/test_report/pytest-report.xml
+  timeout: 60m
+
+backend_tests:
+  stage: test
+  script:
+    - echo "Starting backend service"
+    - docker-compose up -d backend
+    - sleep 60  # Wait for backend service to be fully up
+    - docker-compose ps  # Check the status again
+    - docker-compose logs backend  # Added logs to troubleshoot backend issues
+    - echo "Running pytest tests"
+    - docker-compose exec backend sh -c "pip install -r requirements.txt && pytest --junitxml=/app/backend/pytest-report.xml"
+  artifacts:
+    when: always
+    reports:
+      junit: backend/pytest-report.xml
+    paths:
+      - backend/pytest-report.xml
+  timeout: 60m
+
+frontend_tests:
+  stage: test
+  script:
+    - echo "Starting frontend services"
+    - docker-compose up -d frontend
+    - sleep 60  # Wait for the frontend to be fully up
+    - echo "Running Cypress tests"
+    - docker-compose exec frontend sh -c "npm install && npx cypress run"
+  artifacts:
+    when: always
+    paths:
+      - vue-frontend/cypress/screenshots
+      - vue-frontend/cypress/videos
+  timeout: 60m
