@@ -19,6 +19,10 @@ build_backend:
   stage: build
   image: docker:latest
   script:
+    - echo "Cloning model service repository"
+    - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service.git titanic_model_service
+    - echo "Building model service image"
+    - docker-compose build model_service
     - echo "Building backend image"
     - docker-compose build backend
 
@@ -30,6 +34,26 @@ build_frontend:
     - echo "Building frontend image"
     - docker-compose build frontend
 
+# Job for running model service pytest tests
+model_service_tests:
+  stage: test
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - echo "Starting model service"
+    - docker-compose up -d db
+    - docker-compose up -d model_service
+    - sleep 30  # Wait for the model service to be fully up
+    - echo "Running model service pytest tests"
+    - docker-compose exec model_service sh -c "pip install -r requirements.txt && pytest tests --junitxml=/app/test_report/pytest-report.xml"
+  artifacts:
+    when: always
+    reports:
+      junit: titanic_model_service/test_report/pytest-report.xml
+    paths:
+      - titanic_model_service/test_report/pytest-report.xml
+
 # Job for running backend pytest tests
 backend_tests:
   stage: test
@@ -37,8 +61,11 @@ backend_tests:
   services:
     - docker:dind
   script:
-    - echo "Starting backend and db services"
+    - echo "Starting model service"
     - docker-compose up -d db
+    - docker-compose up -d model_service
+    - sleep 30  # Wait for the model service to be fully up
+    - echo "Starting backend service"
     - docker-compose up -d backend
     - echo "Waiting for backend service to be healthy"
     - docker-compose ps
@@ -62,8 +89,11 @@ frontend_tests:
   services:
     - docker:dind
   script:
-    - echo "Starting db, backend, and frontend services"
+    - echo "Starting model service"
     - docker-compose up -d db
+    - docker-compose up -d model_service
+    - sleep 30  # Wait for the model service to be fully up
+    - echo "Starting backend and frontend services"
     - docker-compose up -d backend
     - docker-compose up -d frontend
     - sleep 60  # Wait for the frontend and backend to be fully up

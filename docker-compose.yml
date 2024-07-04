@@ -8,10 +8,13 @@ services:
     volumes:
       - ./backend:/app
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://127.0.0.1:8080"]
+      test: ["CMD", "curl", "-f", "http://0.0.0.0:8080"]
       interval: 30s
       timeout: 10s
       retries: 5
+    depends_on:
+      - db
+      - model_service
 
   frontend:
     build: ./vue-frontend
@@ -29,18 +32,23 @@ services:
     ports:
       - "5433:5432"
 
-  model_backend:
+  model_service:
     build:
-      context: .
-      dockerfile: Dockerfile.model_backend
+      context: ../titanic_model_service
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     environment:
-      FLASK_ENV: development
-    secrets:
-      - gitcredentials
+      - FLASK_ENV=development
+    volumes:
+      - ../titanic_model_service:/app
     depends_on:
       - db
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://0.0.0.0:8000"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
 secrets:
   gitcredentials:
