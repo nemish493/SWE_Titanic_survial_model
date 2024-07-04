@@ -6,7 +6,6 @@ pipeline:
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: "/certs"
-    GITLAB_TOKEN: $CI_JOB_TOKEN
 
   services:
     - docker:dind
