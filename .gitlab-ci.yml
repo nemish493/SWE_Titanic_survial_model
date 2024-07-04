@@ -37,18 +37,21 @@ build_model_backend:
     - cd titanic_model_service
     - echo "Building model service image"
     - docker-compose build model_service
+  timeout: 60m
 
 build_web_backend:
   stage: build
   script:
     - echo "Building backend image"
     - docker-compose build backend
+  timeout: 60m
 
 build_frontend:
   stage: build
   script:
     - echo "Building frontend image"
     - docker-compose build frontend
+  timeout: 60m
 
 model_service_tests:
   stage: test
@@ -72,6 +75,7 @@ model_service_tests:
       junit: titanic_model_service/test_report/pytest-report.xml
     paths:
       - titanic_model_service/test_report/pytest-report.xml
+  timeout: 60m
 
 backend_tests:
   stage: test
@@ -94,6 +98,7 @@ backend_tests:
       junit: backend/pytest-report.xml
     paths:
       - backend/pytest-report.xml
+  timeout: 60m
 
 frontend_tests:
   stage: test
@@ -113,3 +118,4 @@ frontend_tests:
     paths:
       - vue-frontend/cypress/screenshots
       - vue-frontend/cypress/videos
+  timeout: 60m
