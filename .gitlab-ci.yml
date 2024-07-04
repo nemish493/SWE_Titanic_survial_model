@@ -14,10 +14,9 @@ before_script:
   - echo "Environment Variables:"
   - env
   - echo "Cleaning up Docker resources..."
-  - |  # Adding retry mechanism for network prune
-      for i in {1..5}; do
-        docker network prune -f && break || sleep 10;
-      done
+  - for i in {1..5}; do
+      docker network prune -f && break || sleep 10;
+    done
   - docker container prune -f || true
   - docker volume prune -f || true
 
@@ -76,6 +75,7 @@ model_service_tests:
     - cd titanic_model_service
     - echo "Stopping any existing containers"
     - docker-compose down --remove-orphans || true
+    - docker rm -f $(docker ps -a -q) || true  # Ensure all containers are removed
     - echo "Starting model service"
     - docker-compose up -d model_service
     - sleep 60  # Wait for the model service to be fully up
@@ -96,6 +96,7 @@ backend_tests:
   script:
     - echo "Stopping and removing existing containers to avoid conflicts"
     - docker-compose down --remove-orphans || true
+    - docker rm -f $(docker ps -a -q) || true  # Ensure all containers are removed
     - echo "Starting backend service"
     - docker-compose up -d backend
     - echo "Waiting for backend service to be healthy"
@@ -119,6 +120,7 @@ frontend_tests:
   script:
     - echo "Stopping and removing existing containers to avoid conflicts"
     - docker-compose down --remove-orphans || true
+    - docker rm -f $(docker ps -a -q) || true  # Ensure all containers are removed
     - echo "Starting frontend service"
     - docker-compose up -d frontend
     - echo "Running Cypress tests"
