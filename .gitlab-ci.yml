@@ -13,10 +13,9 @@ variables:
 before_script:
   - apk add --no-cache git curl
   - git config --global url."https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de".insteadOf "https://mygit.th-deg.de"
-  - echo "Stopping any existing containers"
-  - docker ps -q | xargs -r docker stop
-  - docker ps -a -q | xargs -r docker rm
-  - docker network prune -f
+  - docker info
+  - echo "Environment Variables:"
+  - env
 
 stages:
   - build
