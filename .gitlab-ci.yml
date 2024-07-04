@@ -13,9 +13,14 @@ services:
 
 build_model_backend:
   stage: build
+  image: docker:latest
   script:
     - echo "Cloning model service repository"
     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
+    - echo "Contents of the current directory:"
+    - ls -la
+    - echo "Contents of the titanic_model_service directory:"
+    - ls -la titanic_model_service
     - cd titanic_model_service
     - echo "Building model service image"
     - docker-compose build model_service
