@@ -71,7 +71,7 @@ model_service_tests:
     - docker-compose -f docker-compose-model.yml up -d model_service
     - sleep 60  # Wait for the model service to be fully up
     - echo "Running model service pytest tests"
-    - docker-compose -f docker-compose-model.yml exec model_service sh -c "pip install -r requirements.txt && pytest tests --junitxml=/app/test_report/pytest-report.xml"
+    - docker-compose exec model_service sh -c "pip install -r requirements.txt && pytest tests --junitxml=/app/test_report/pytest-report.xml"
   artifacts:
     when: always
     reports:
