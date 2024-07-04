@@ -1,9 +1,7 @@
 image: docker:latest
 
 services:
-  - name: docker:dind
-    command: ["--mtu=1400"]
-    entrypoint: ["dockerd-entrypoint.sh"]
+  - docker:dind
 
 variables:
   DOCKER_DRIVER: overlay2
@@ -52,6 +50,7 @@ model_service_tests:
     - echo "Stopping any existing containers"
     - docker-compose down --remove-orphans || true
     - docker rm -f $(docker ps -a -q) || true
+    - docker network prune -f || true
     - echo "After docker-compose down, docker ps -a:"
     - docker ps -a
     - echo "Starting model service"
@@ -72,6 +71,7 @@ backend_tests:
     - echo "Stopping any existing containers"
     - docker-compose down --remove-orphans || true
     - docker rm -f $(docker ps -a -q) || true
+    - docker network prune -f || true
     - echo "After docker-compose down, docker ps -a:"
     - docker ps -a
     - echo "Starting backend service"
@@ -94,6 +94,7 @@ frontend_tests:
     - echo "Stopping any existing containers"
     - docker-compose down --remove-orphans || true
     - docker rm -f $(docker ps -a -q) || true
+    - docker network prune -f || true
     - echo "After docker-compose down, docker ps -a:"
     - docker ps -a
     - echo "Starting frontend services"
