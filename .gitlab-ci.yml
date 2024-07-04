@@ -28,7 +28,7 @@ build_backend:
     - ls -la titanic_model_service
     - cd titanic_model_service  # Change to the cloned directory
     - echo "Building model service image"
-    - docker-compose build server
+    - docker-compose build model_service
     - cd ..
     - echo "Building backend image"
     - docker-compose build backend
@@ -51,10 +51,10 @@ model_service_tests:
     - cd titanic_model_service  # Change to the cloned directory
     - echo "Starting model service"
     - docker-compose down --remove-orphans  # Ensure any previous services are stopped
-    - docker-compose up -d server
+    - docker-compose up -d model_service
     - sleep 60  # Wait for the model service to be fully up
     - echo "Running model service pytest tests"
-    - docker-compose exec server sh -c "pip install -r requirements.txt && pytest tests --junitxml=/app/test_report/pytest-report.xml"
+    - docker-compose exec model_service sh -c "pip install -r requirements.txt && pytest tests --junitxml=/app/test_report/pytest-report.xml"
   artifacts:
     when: always
     reports:
@@ -73,7 +73,7 @@ backend_tests:
     - cd titanic_model_service  # Change to the cloned directory
     - echo "Starting model service"
     - docker-compose down --remove-orphans  # Ensure any previous services are stopped
-    - docker-compose up -d server
+    - docker-compose up -d model_service
     - cd ..
     - sleep 60  # Wait for the model service to be fully up
     - echo "Starting backend service"
@@ -102,7 +102,7 @@ frontend_tests:
     - cd titanic_model_service  # Change to the cloned directory
     - echo "Starting model service"
     - docker-compose down --remove-orphans  # Ensure any previous services are stopped
-    - docker-compose up -d server
+    - docker-compose up -d model_service
     - cd ..
     - sleep 60  # Wait for the model service to be fully up
     - echo "Starting backend and frontend services"
