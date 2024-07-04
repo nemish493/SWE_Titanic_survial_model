@@ -16,7 +16,7 @@ before_script:
   - echo "Environment Variables:"
   - env
 
-build_backend:
+build_model_backend:
   stage: build
   image: docker:latest
   script:
@@ -34,7 +34,7 @@ build_backend:
 build_web_backend:
   stage: build
   image: docker:latest
-  scripts:
+  script:
     - echo "Building backend image"
     - docker-compose build backend
 
