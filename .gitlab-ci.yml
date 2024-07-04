@@ -58,7 +58,7 @@ model_service_tests:
     - echo "Stopping any existing containers"
     - docker-compose down --remove-orphans || true
     - echo "Starting model service"
-    - docker-compose up -d --build
+    - docker-compose up -d model_service
     - sleep 60  # Wait for the model service to be fully up
     - echo "Running model service pytest tests"
     - docker-compose exec model_service sh -c "pip install -r requirements.txt && pytest tests --junitxml=/app/test_report/pytest-report.xml"
@@ -78,7 +78,7 @@ backend_tests:
     - echo "Stopping and removing existing containers to avoid conflicts"
     - docker-compose down --remove-orphans || true
     - echo "Starting backend service"
-    - docker-compose up -d --build
+    - docker-compose up -d backend
     - echo "Waiting for backend service to be healthy"
     - sleep 60  # Wait for backend service to be fully up
     - docker-compose ps  # Check the status again
