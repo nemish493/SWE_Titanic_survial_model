@@ -37,13 +37,13 @@ services:
       context: ../titanic_model_service
       dockerfile: Dockerfile
     ports:
-      - "8000:8001"  # Changed the port to avoid conflicts
+      - "8001:8000"  # Ensure host port 8001 maps to container port 8000
     environment:
       - FLASK_ENV=development
     volumes:
       - ../titanic_model_service:/app
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://0.0.0.0:8001"]
+      test: ["CMD", "curl", "-f", "http://0.0.0.0:8000"]
       interval: 30s
       timeout: 10s
       retries: 5

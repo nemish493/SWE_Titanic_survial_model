@@ -1,17 +1,20 @@
 # Use the official Python image from the Docker Hub
-FROM python:3.12-slim
+FROM python:3.9-slim
 
-# Set the working directory in the container
+# Set the working directory
 WORKDIR /app
 
-# Copy the requirements file into the container
+# Copy the requirements file to the container
 COPY requirements.txt .
 
-# Install the dependencies
-RUN pip install --upgrade pip && pip install -r requirements.txt
+# Install any dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application code into the container
+# Copy the rest of the working directory contents into the container
 COPY . .
 
-# Command to run the application
-CMD ["python", "main.py"]  # Adjust this based on your actual entry point
+# Expose the port that the model service runs on
+EXPOSE 8000
+
+# Run the application
+CMD ["python", "main.py"]
