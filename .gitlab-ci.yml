@@ -19,8 +19,6 @@ before_script:
     done
   - docker container prune -f || true
   - docker volume prune -f || true
-  - echo "Copying cleanup script"
-  - cp /path/to/cleanup.sh .
 
 stages:
   - cleanup
