@@ -37,7 +37,7 @@ services:
       context: ../titanic_model_service
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"  # Ensure host port 8001 maps to container port 8000
+      - "8002:8000"  # Ensure host port 8002 maps to container port 8000
     environment:
       - FLASK_ENV=development
     volumes:
