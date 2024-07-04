@@ -25,11 +25,16 @@ build_backend:
     - echo "Contents of the current directory:"
     - ls -la
     - echo "Contents of the titanic_model_service directory:"
+    - ls
     - ls -la titanic_model_service
     - cd titanic_model_service  # Change to the cloned directory
     - echo "Building model service image"
     - docker-compose build model_service
-    - cd ..
+
+build_web_backend:
+  stage: build
+  image: docker:latest
+  scripts:
     - echo "Building backend image"
     - docker-compose build backend
 
