@@ -19,6 +19,8 @@ before_script:
     done
   - docker container prune -f || true
   - docker volume prune -f || true
+  - echo "Copying cleanup script"
+  - cp /path/to/cleanup.sh .
 
 stages:
   - cleanup
@@ -29,12 +31,7 @@ cleanup_docker:
   stage: cleanup
   image: docker:latest
   script:
-    - echo "Cleaning up Docker resources before starting the build"
-    - for i in {1..5}; do
-        docker network prune -f && break || sleep 10;
-      done
-    - docker container prune -f || true
-    - docker volume prune -f || true
+    - sh cleanup.sh
 
 build_model_backend:
   stage: build
@@ -66,12 +63,10 @@ model_service_tests:
   services:
     - docker:dind
   script:
+    - sh cleanup.sh
     - echo "Cloning model service repository"
     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
     - cd titanic_model_service
-    - echo "Stopping any existing containers"
-    - docker-compose down --remove-orphans || true
-    - docker rm -f $(docker ps -a -q) || true  # Ensure all containers are removed
     - echo "Starting model service"
     - docker-compose up -d model_service
     - sleep 60  # Wait for the model service to be fully up
@@ -90,9 +85,7 @@ backend_tests:
   services:
     - docker:dind
   script:
-    - echo "Stopping and removing existing containers to avoid conflicts"
-    - docker-compose down --remove-orphans || true
-    - docker rm -f $(docker ps -a -q) || true  # Ensure all containers are removed
+    - sh cleanup.sh
     - echo "Starting backend service"
     - docker-compose up -d backend
     - echo "Waiting for backend service to be healthy"
@@ -114,9 +107,7 @@ frontend_tests:
   services:
     - docker:dind
   script:
-    - echo "Stopping and removing existing containers to avoid conflicts"
-    - docker-compose down --remove-orphans || true
-    - docker rm -f $(docker ps -a -q) || true  # Ensure all containers are removed
+    - sh cleanup.sh
     - echo "Starting frontend service"
     - docker-compose up -d frontend
     - echo "Running Cypress tests"
