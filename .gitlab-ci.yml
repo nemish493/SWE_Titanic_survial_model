@@ -19,6 +19,8 @@ before_script:
     done
   - docker container prune -f || true
   - docker volume prune -f || true
+  - echo "Setting execute permission for cleanup script"
+  - chmod +x cleanup.sh
 
 stages:
   - cleanup
