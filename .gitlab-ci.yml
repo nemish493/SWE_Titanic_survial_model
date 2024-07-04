@@ -1,26 +1,27 @@
-stages:
-  - build
-  - test
+image: docker:latest
+
+services:
+  - docker:dind
 
 variables:
   DOCKER_DRIVER: overlay2
-  DOCKER_TLS_CERTDIR: "/certs"
-
-services:
-  - name: docker:dind
-    command: ["--mtu=1400"]
-    entrypoint: ["dockerd-entrypoint.sh"]
+  DOCKER_TLS_CERTDIR: ""
 
 before_script:
   - apk add --no-cache git curl
   - git config --global url."https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de".insteadOf "https://mygit.th-deg.de"
   - docker info
+  - docker stop $(docker ps -a -q) || true
+  - docker rm $(docker ps -a -q) || true
   - echo "Environment Variables:"
   - env
 
+stages:
+  - build
+  - test
+
 build_model_backend:
   stage: build
-  image: docker:latest
   script:
     - echo "Cloning model service repository"
     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
@@ -30,25 +31,18 @@ build_model_backend:
 
 build_web_backend:
   stage: build
-  image: docker:latest
   script:
     - echo "Building backend image"
     - docker-compose build backend
 
 build_frontend:
   stage: build
-  image: docker:latest
   script:
     - echo "Building frontend image"
     - docker-compose build frontend
 
 model_service_tests:
   stage: test
-  image: docker:latest
-  services:
-    - name: docker:dind
-      command: ["--mtu=1400"]
-      entrypoint: ["dockerd-entrypoint.sh"]
   script:
     - echo "Cloning model service repository"
     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
@@ -71,11 +65,6 @@ model_service_tests:
 
 backend_tests:
   stage: test
-  image: docker:latest
-  services:
-    - name: docker:dind
-      command: ["--mtu=1400"]
-      entrypoint: ["dockerd-entrypoint.sh"]
   script:
     - echo "Stopping any existing containers"
     - docker-compose down --remove-orphans
@@ -83,7 +72,6 @@ backend_tests:
     - docker ps -a
     - echo "Starting backend service"
     - docker-compose up -d backend
-    - echo "Waiting for backend service to be healthy"
     - sleep 60  # Wait for backend service to be fully up
     - docker-compose ps  # Check the status again
     - docker-compose logs backend  # Added logs to troubleshoot backend issues
@@ -98,11 +86,6 @@ backend_tests:
 
 frontend_tests:
   stage: test
-  image: docker:latest
-  services:
-    - name: docker:dind
-      command: ["--mtu=1400"]
-      entrypoint: ["dockerd-entrypoint.sh"]
   script:
     - echo "Stopping any existing containers"
     - docker-compose down --remove-orphans
