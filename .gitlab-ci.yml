@@ -27,6 +27,8 @@ before_script:
   - docker rm $(docker ps -aq) || true
   - docker network prune -f
   - docker volume prune -f
+  - echo "After cleanup, docker ps -a:"
+  - docker ps -a
 
 build_model_backend:
   stage: build
@@ -70,6 +72,8 @@ model_service_tests:
     - cd titanic_model_service
     - echo "Stopping any existing containers"
     - docker-compose down --remove-orphans
+    - echo "After docker-compose down, docker ps -a:"
+    - docker ps -a
     - echo "Starting model service"
     - docker-compose up -d model_service
     - sleep 60  # Wait for the model service to be fully up
@@ -97,6 +101,8 @@ backend_tests:
   script:
     - echo "Stopping any existing containers"
     - docker-compose down --remove-orphans
+    - echo "After docker-compose down, docker ps -a:"
+    - docker ps -a
     - echo "Starting backend service"
     - docker-compose up -d backend
     - echo "Waiting for backend service to be healthy"
@@ -127,6 +133,8 @@ frontend_tests:
   script:
     - echo "Stopping any existing containers"
     - docker-compose down --remove-orphans
+    - echo "After docker-compose down, docker ps -a:"
+    - docker ps -a
     - echo "Starting frontend services"
     - docker-compose up -d frontend
     - sleep 60  # Wait for the frontend and backend to be fully up
