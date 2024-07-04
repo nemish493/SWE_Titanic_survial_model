@@ -1,4 +1,5 @@
-stages:
+pipeline:
+  stages:
     - build
     - test
 
@@ -98,6 +99,10 @@ frontend_tests:
   services:
     - docker:dind
   script:
+    - echo "Stopping and removing existing containers to avoid conflicts"
+    - docker-compose down --remove-orphans || true
+    - echo "Starting frontend service"
+    - docker-compose up -d --build
     - echo "Running Cypress tests"
     - docker-compose exec frontend sh -c "npm install && npx cypress run"
   artifacts:
