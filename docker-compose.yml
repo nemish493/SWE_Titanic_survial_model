@@ -13,7 +13,6 @@ services:
       timeout: 10s
       retries: 5
     depends_on:
-      - db
       - model_service
 
   frontend:
@@ -23,15 +22,6 @@ services:
     container_name: frontend_service_container
     depends_on:
       - backend
-
-  db:
-    image: postgres:latest
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5433:5432"
-    container_name: database
 
   model_service:
     build:
@@ -43,8 +33,6 @@ services:
       - FLASK_ENV=development
     volumes:
       - ../titanic_model_service:/app
-    depends_on:
-      - db
     healthcheck:
       test: ["CMD", "curl", "-f", "http://0.0.0.0:8000"]
       interval: 30s
