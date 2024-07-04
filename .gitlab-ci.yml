@@ -31,7 +31,7 @@ cleanup_docker:
   stage: cleanup
   image: docker:latest
   script:
-    - ./cleanup.sh
+    - ./clean-report/cleanup.sh
 
 build_model_backend:
   stage: build
@@ -63,7 +63,7 @@ model_service_tests:
   services:
     - docker:dind
   script:
-    - ./cleanup.sh
+    - ./clean-report/cleanup.sh
     - echo "Cloning model service repository"
     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
     - cd titanic_model_service
@@ -85,7 +85,7 @@ backend_tests:
   services:
     - docker:dind
   script:
-    - ./cleanup.sh
+    - ./clean-report/cleanup.sh
     - echo "Starting backend service"
     - docker-compose up -d backend
     - echo "Waiting for backend service to be healthy"
@@ -107,7 +107,7 @@ frontend_tests:
   services:
     - docker:dind
   script:
-    - ./cleanup.sh
+    - ./clean-report/cleanup.sh
     - echo "Starting frontend service"
     - docker-compose up -d frontend
     - echo "Running Cypress tests"
