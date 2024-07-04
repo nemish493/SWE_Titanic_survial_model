@@ -41,7 +41,7 @@ build_model_backend:
     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
     - cd titanic_model_service
     - echo "Building model service image"
-    - docker-compose -d build model_service
+    - docker-compose build model_service
 
 build_web_backend:
   stage: build
@@ -68,7 +68,7 @@ model_service_tests:
     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
     - cd titanic_model_service
     - echo "Starting model service"
-    - docker-compose -f docker-compose-model.yml up -d model_service
+    - docker-compose up -d model_service
     - sleep 60  # Wait for the model service to be fully up
     - echo "Running model service pytest tests"
     - docker-compose exec model_service sh -c "pip install -r requirements.txt && pytest tests --junitxml=/app/test_report/pytest-report.xml"
