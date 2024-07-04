@@ -46,6 +46,7 @@ build_frontend:
 
 model_service_tests:
   stage: test
+  image: docker:latest
   script:
     - echo "Cloning model service repository"
     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
@@ -68,6 +69,7 @@ model_service_tests:
 
 backend_tests:
   stage: test
+  image: docker:latest
   script:
     - echo "Stopping any existing containers"
     - docker-compose down --remove-orphans
@@ -89,6 +91,7 @@ backend_tests:
 
 frontend_tests:
   stage: test
+  image: docker:latest
   script:
     - echo "Stopping any existing containers"
     - docker-compose down --remove-orphans
