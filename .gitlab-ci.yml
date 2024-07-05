@@ -65,11 +65,14 @@ model_service_tests:
   before_script:
     - apt-get update && apt-get install -y git curl
   script:
-    - echo "Running model service tests"
-    - cd titanic_model_service  # Updated to correct directory path
-    - pip install -r requirements.txt
-    - mkdir -p test_report
-    - pytest tests --junitxml=test_report/pytest-report.xml
+    - echo "Cloning model service repository"
+    - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
+    - cd titanic_model_service
+    - echo "Starting model service"
+    - docker-compose up -d model_service
+    - sleep 60  # Wait for the model service to be fully up
+    - echo "Running model service pytest tests"
+    - docker-compose exec model_service sh -c "pip install -r requirements.txt && pytest tests --junitxml=/app/test_report/pytest-report.xml"
   artifacts:
     when: always
     reports:
@@ -105,10 +108,11 @@ frontend_tests:
   before_script:
     - apt-get update && apt-get install -y git curl
   script:
+    - echo "Starting frontend services"
+    - docker-compose up -d frontend
+    - sleep 60  # Wait for the frontend and backend to be fully up
     - echo "Running Cypress tests"
-    - cd vue-frontend
-    - npm install
-    - npx cypress run
+    - docker-compose exec frontend sh -c "npm install && npx cypress run"
   artifacts:
     when: always
     paths:
