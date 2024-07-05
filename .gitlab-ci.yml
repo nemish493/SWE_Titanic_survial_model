@@ -36,9 +36,6 @@ cleanup_docker:
 build_model_backend:
   stage: build
   image: docker:latest
-  before_script:
-    - curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    - chmod +x /usr/local/bin/docker-compose
   script:
     - echo "Cloning model service repository"
     - git clone https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
@@ -49,9 +46,6 @@ build_model_backend:
 build_web_backend:
   stage: build
   image: docker:latest
-  before_script:
-    - curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    - chmod +x /usr/local/bin/docker-compose
   script:
     - echo "Building backend image"
     - docker-compose build backend
@@ -59,9 +53,6 @@ build_web_backend:
 build_frontend:
   stage: build
   image: docker:latest
-  before_script:
-    - curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    - chmod +x /usr/local/bin/docker-compose
   script:
     - echo "Building frontend image"
     - docker-compose build frontend
@@ -76,8 +67,6 @@ model_service_tests:
     - git config --global url."https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de".insteadOf "https://mygit.th-deg.de"
     - git clone https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
     - cd titanic_model_service
-    - curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    - chmod +x /usr/local/bin/docker-compose
     - docker-compose up -d model_service
   script:
     - echo "Running model service tests"
@@ -100,8 +89,6 @@ backend_tests:
     - apt-get update && apt-get install -y git curl
     - git clone https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de/ainb_24_sancus/titanic_web_service titanic_web_service
     - cd titanic_web_service
-    - curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    - chmod +x /usr/local/bin/docker-compose
     - docker-compose up -d backend model_service
   script:
     - echo "Running backend tests"
@@ -123,8 +110,6 @@ frontend_tests:
     - docker:dind
   before_script:
     - apt-get update && apt-get install -y git curl
-    - curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    - chmod +x /usr/local/bin/docker-compose
     - docker-compose up -d frontend
   script:
     - echo "Running Cypress tests"
