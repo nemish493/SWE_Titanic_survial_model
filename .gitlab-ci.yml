@@ -6,7 +6,7 @@ services:
   - docker:dind
 
 before_script:
-  - apk add --no-cache git curl
+  - apt-get update && apt-get install -y git curl  # Using apt-get instead of apk
   - git config --global url."https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de".insteadOf "https://mygit.th-deg.de"
   - echo "Waiting for Docker to be ready..."
   - sleep 60  # Increased sleep time for Docker to be fully ready
@@ -60,6 +60,10 @@ build_frontend:
 model_service_tests:
   stage: test
   image: python:3.9
+  services:
+    - docker:dind
+  before_script:
+    - apt-get update && apt-get install -y git curl
   script:
     - echo "Running model service tests"
     - cd titanic_model_service
@@ -77,6 +81,8 @@ backend_tests:
   image: python:3.9
   services:
     - docker:dind
+  before_script:
+    - apt-get update && apt-get install -y git curl
   script:
     - echo "Starting backend service"
     - docker-compose up -d backend
@@ -100,6 +106,8 @@ frontend_tests:
   image: node:14
   services:
     - docker:dind
+  before_script:
+    - apt-get update && apt-get install -y git curl
   script:
     - echo "Starting frontend services"
     - docker-compose up -d frontend
