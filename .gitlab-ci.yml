@@ -6,7 +6,7 @@ services:
   - docker:dind
 
 before_script:
-  - apt-get update && apt-get install -y git curl  # Using apt-get instead of apk
+  - apt-get update && apt-get install -y git curl
   - git config --global url."https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de".insteadOf "https://mygit.th-deg.de"
   - echo "Waiting for Docker to be ready..."
   - sleep 60  # Increased sleep time for Docker to be fully ready
@@ -66,9 +66,10 @@ model_service_tests:
     - apt-get update && apt-get install -y git curl
   script:
     - echo "Running model service tests"
-    - cd model_service
+    - cd titanic_model_service  # Updated to correct directory path
     - pip install -r requirements.txt
-    - pytest tests --junitxml=../test_report/pytest-report.xml
+    - mkdir -p test_report
+    - pytest tests --junitxml=test_report/pytest-report.xml
   artifacts:
     when: always
     reports:
@@ -87,13 +88,14 @@ backend_tests:
     - echo "Running backend tests"
     - cd backend
     - pip install -r requirements.txt
+    - mkdir -p ../../test_report  # Ensure the test_report directory exists
     - pytest --junitxml=../../test_report/backend-pytest-report.xml
   artifacts:
     when: always
     reports:
-      junit: test_report/backend-pytest-report.xml
+      junit: ../../test_report/backend-pytest-report.xml
     paths:
-      - test_report/backend-pytest-report.xml
+      - ../../test_report/backend-pytest-report.xml
 
 frontend_tests:
   stage: test
