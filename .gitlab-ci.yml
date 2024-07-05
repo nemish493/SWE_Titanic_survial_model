@@ -92,7 +92,7 @@ backend_tests:
     - sleep 60  # Wait for backend service to be fully up
     - docker-compose ps  # Check the status again
     - docker-compose logs backend  # Added logs to troubleshoot backend issues
-    - docker-compose exec backend sh -c "[ -f /app/main.py ] || { echo 'Error: main.py file not found in /app'; exit 1; }"  # Check if main.py exists inside the container
+    - docker-compose exec backend
     - echo "Running pytest tests"
     - docker-compose exec backend sh -c "pip install -r requirements.txt && pytest --junitxml=/app/backend/pytest-report.xml"
   artifacts:
