@@ -86,13 +86,10 @@ backend_tests:
   services:
     - docker:dind
   before_script:
-    - apt-get update && apt-get install -y git curl
-    - git clone https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de/ainb_24_sancus/titanic_web_service titanic_web_service
-    - cd titanic_web_service
-    - curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    - chmod +x /usr/local/bin/docker-compose
-    - docker-compose up -d backend model_service  # Ensure services are running
+    - docker-compose ps # Ensure services are running
   script:
+    - echo "Starting backend services"
+    - docker-compose up -d backend
     - echo "Running backend tests"
     - cd backend
     - pip install -r requirements.txt
@@ -111,7 +108,7 @@ frontend_tests:
   services:
     - docker:dind
   before_script:
-    - apt-get update && apt-get install -y git curl
+    - docker-compose ps # Ensure services are running
   script:
     - echo "Starting frontend services"
     - docker-compose up -d frontend
