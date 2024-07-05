@@ -53,9 +53,14 @@ build_web_backend:
 build_frontend:
   stage: build
   image: docker:latest
+  before_script:
+    - apt-get update && apt-get install -y curl
+    - curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    - chmod +x /usr/local/bin/docker-compose
   script:
     - echo "Building frontend image"
     - docker-compose build frontend
+
 
 model_service_tests:
   stage: test
@@ -64,15 +69,14 @@ model_service_tests:
     - docker:dind
   before_script:
     - apt-get update && apt-get install -y git curl
+    - git config --global url."https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de".insteadOf "https://mygit.th-deg.de"
   script:
     - echo "Cloning model service repository"
-    - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
+    - git clone https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
     - cd titanic_model_service
-    - echo "Starting model service"
-    - docker-compose up -d model_service
-    - sleep 60  # Wait for the model service to be fully up
-    - echo "Running model service pytest tests"
-    - docker-compose exec model_service sh -c "pip install -r requirements.txt && pytest tests --junitxml=/app/test_report/pytest-report.xml"
+    - pip install -r requirements.txt
+    - mkdir -p test_report
+    - pytest tests --junitxml=test_report/pytest-report.xml
   artifacts:
     when: always
     reports:
@@ -87,18 +91,23 @@ backend_tests:
     - docker:dind
   before_script:
     - apt-get update && apt-get install -y git curl
+    - git clone https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de/ainb_24_sancus/titanic_web_service titanic_web_service
+    - cd titanic_web_service
+    - curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    - chmod +x /usr/local/bin/docker-compose
+    - docker-compose up -d backend model_service  # Ensure services are running
   script:
     - echo "Running backend tests"
     - cd backend
     - pip install -r requirements.txt
-    - mkdir -p ../../test_report  # Ensure the test_report directory exists
-    - pytest --junitxml=../../test_report/backend-pytest-report.xml
+    - mkdir -p ../test_report
+    - pytest --junitxml=../test_report/backend-pytest-report.xml
   artifacts:
     when: always
     reports:
-      junit: ../../test_report/backend-pytest-report.xml
+      junit: ../test_report/backend-pytest-report.xml
     paths:
-      - ../../test_report/backend-pytest-report.xml
+      - ../test_report/backend-pytest-report.xml
 
 frontend_tests:
   stage: test
