@@ -6,9 +6,7 @@ services:
   - docker:dind
 
 before_script:
-  - docker network prune -f || true
-  - docker container prune -f || true
-  - docker volume prune -f || true
+  - docker rm -f $(docker ps -a -q)
   - apk add --no-cache git curl
   - git config --global url."https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de".insteadOf "https://mygit.th-deg.de"
   - echo "Waiting for Docker to be ready..."
