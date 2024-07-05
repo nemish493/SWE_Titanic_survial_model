@@ -84,10 +84,16 @@ backend_tests:
     - sleep 60  # Wait for backend service to be fully up
     - docker-compose ps  # Check the status again
     - docker-compose logs backend  # Added logs to troubleshoot backend issues
+<<<<<<< HEAD
     - echo "Running backend tests"
     - cd backend
     - pip install -r requirements.txt
     - pytest --junitxml=../../test_report/backend-pytest-report.xml
+=======
+    - docker-compose exec backend
+    - echo "Running pytest tests"
+    - docker-compose exec backend sh -c "pip install -r requirements.txt && pytest --junitxml=/app/backend/pytest-report.xml"
+>>>>>>> 9f57e3fd4edb3a3c5a95aec363ce55a63c48871e
   artifacts:
     when: always
     reports:
