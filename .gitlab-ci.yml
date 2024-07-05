@@ -66,7 +66,7 @@ model_service_tests:
     - apt-get update && apt-get install -y git curl
   script:
     - echo "Running model service tests"
-    - cd titanic_model_service
+    - cd model_service
     - pip install -r requirements.txt
     - pytest tests --junitxml=../test_report/pytest-report.xml
   artifacts:
