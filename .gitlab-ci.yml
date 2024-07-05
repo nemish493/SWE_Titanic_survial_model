@@ -59,60 +59,55 @@ build_frontend:
 
 model_service_tests:
   stage: test
-  image: docker:latest
-  services:
-    - docker:dind
+  image: python:3.9
   script:
-    - ./cleanup.sh
-    - echo "Cloning model service repository"
-    - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
+    - echo "Running model service tests"
     - cd titanic_model_service
-    - echo "Starting model service"
-    - docker-compose -f docker-compose-model.yml up -d model_service
-    - sleep 60  # Wait for the model service to be fully up
-    - echo "Running model service pytest tests"
-    - docker-compose -f docker-compose-model.yml exec model_service sh -c "pip install -r requirements.txt && pytest tests --junitxml=/app/test_report/pytest-report.xml"
+    - pip install -r requirements.txt
+    - pytest tests --junitxml=../test_report/pytest-report.xml
   artifacts:
     when: always
     reports:
-      junit: titanic_model_service/test_report/pytest-report.xml
+      junit: test_report/pytest-report.xml
     paths:
-      - titanic_model_service/test_report/pytest-report.xml
+      - test_report/pytest-report.xml
 
 backend_tests:
   stage: test
-  image: docker:latest
+  image: python:3.9
   services:
     - docker:dind
   script:
-    - ./cleanup.sh
     - echo "Starting backend service"
     - docker-compose up -d backend
     - echo "Waiting for backend service to be healthy"
     - sleep 60  # Wait for backend service to be fully up
     - docker-compose ps  # Check the status again
     - docker-compose logs backend  # Added logs to troubleshoot backend issues
-    - docker-compose exec backend sh -c "[ -f /app/main.py ] || { echo 'Error: main.py file not found in /app'; exit 1; }"  # Check if main.py exists inside the container
-    - echo "Running pytest tests"
-    - docker-compose exec backend sh -c "pip install -r requirements.txt && pytest --junitxml=/app/backend/pytest-report.xml"
+    - echo "Running backend tests"
+    - cd backend
+    - pip install -r requirements.txt
+    - pytest --junitxml=../../test_report/backend-pytest-report.xml
   artifacts:
     when: always
     reports:
-      junit: backend/pytest-report.xml
+      junit: test_report/backend-pytest-report.xml
     paths:
-      - backend/pytest-report.xml
+      - test_report/backend-pytest-report.xml
 
 frontend_tests:
   stage: test
-  image: docker:latest
+  image: node:14
   services:
     - docker:dind
   script:
-    - ./cleanup.sh
-    - echo "Starting frontend service"
+    - echo "Starting frontend services"
     - docker-compose up -d frontend
+    - sleep 60  # Wait for the frontend and backend to be fully up
     - echo "Running Cypress tests"
-    - docker-compose exec frontend sh -c "npm install && npx cypress run"
+    - cd vue-frontend
+    - npm install
+    - npx cypress run
   artifacts:
     when: always
     paths:
