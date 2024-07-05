@@ -9,7 +9,7 @@ before_script:
   - apt-get update && apt-get install -y git curl
   - git config --global url."https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de".insteadOf "https://mygit.th-deg.de"
   - echo "Waiting for Docker to be ready..."
-  - sleep 60  # Increased sleep time for Docker to be fully ready
+  - sleep 60
   - docker info
   - echo "Environment Variables:"
   - env
@@ -36,9 +36,12 @@ cleanup_docker:
 build_model_backend:
   stage: build
   image: docker:latest
+  before_script:
+    - curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    - chmod +x /usr/local/bin/docker-compose
   script:
     - echo "Cloning model service repository"
-    - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
+    - git clone https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
     - cd titanic_model_service
     - echo "Building model service image"
     - docker-compose -f docker-compose-model.yml build model_service
@@ -46,6 +49,9 @@ build_model_backend:
 build_web_backend:
   stage: build
   image: docker:latest
+  before_script:
+    - curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    - chmod +x /usr/local/bin/docker-compose
   script:
     - echo "Building backend image"
     - docker-compose build backend
@@ -53,10 +59,12 @@ build_web_backend:
 build_frontend:
   stage: build
   image: docker:latest
+  before_script:
+    - curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    - chmod +x /usr/local/bin/docker-compose
   script:
     - echo "Building frontend image"
     - docker-compose build frontend
-
 
 model_service_tests:
   stage: test
@@ -66,10 +74,13 @@ model_service_tests:
   before_script:
     - apt-get update && apt-get install -y git curl
     - git config --global url."https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de".insteadOf "https://mygit.th-deg.de"
-  script:
-    - echo "Cloning model service repository"
     - git clone https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
     - cd titanic_model_service
+    - curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    - chmod +x /usr/local/bin/docker-compose
+    - docker-compose up -d model_service
+  script:
+    - echo "Running model service tests"
     - pip install -r requirements.txt
     - mkdir -p test_report
     - pytest tests --junitxml=test_report/pytest-report.xml
@@ -86,10 +97,13 @@ backend_tests:
   services:
     - docker:dind
   before_script:
-    - docker-compose ps # Ensure services are running
+    - apt-get update && apt-get install -y git curl
+    - git clone https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de/ainb_24_sancus/titanic_web_service titanic_web_service
+    - cd titanic_web_service
+    - curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    - chmod +x /usr/local/bin/docker-compose
+    - docker-compose up -d backend model_service
   script:
-    - echo "Starting backend services"
-    - docker-compose up -d backend
     - echo "Running backend tests"
     - cd backend
     - pip install -r requirements.txt
@@ -108,13 +122,15 @@ frontend_tests:
   services:
     - docker:dind
   before_script:
-    - docker-compose ps # Ensure services are running
-  script:
-    - echo "Starting frontend services"
+    - apt-get update && apt-get install -y git curl
+    - curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    - chmod +x /usr/local/bin/docker-compose
     - docker-compose up -d frontend
-    - sleep 60  # Wait for the frontend and backend to be fully up
+  script:
     - echo "Running Cypress tests"
-    - docker-compose exec frontend sh -c "npm install && npx cypress run"
+    - cd vue-frontend
+    - npm install
+    - npx cypress run
   artifacts:
     when: always
     paths:
