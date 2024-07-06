@@ -15,7 +15,7 @@ before_script:
   - env
   - echo "Setting execute permission for cleanup script"
   - chmod +x cleanup.sh
-  - apt-get install lsof
+  - apk add lsof
 
 stages:
   # - cleanup
