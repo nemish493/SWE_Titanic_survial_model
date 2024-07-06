@@ -31,6 +31,7 @@ build_model_backend:
   stage: build
   image: docker:latest
   script:
+    - rm -rf titanic_model_service
     - echo "Cloning model service repository"
     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
     - cd titanic_model_service
