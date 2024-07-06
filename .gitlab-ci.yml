@@ -10,7 +10,7 @@ before_script:
   - git config --global url."https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de".insteadOf "https://mygit.th-deg.de"
   - echo "Waiting for Docker to be ready..."
   # - sleep 60  # Increased sleep time for Docker to be fully ready
-  - docker info
+  # - docker info
   - echo "Environment Variables:"
   - env
   - echo "Setting execute permission for cleanup script"
