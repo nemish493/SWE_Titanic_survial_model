@@ -6,7 +6,7 @@ services:
   - docker:dind
 
 before_script:
-  - apt-get update && apt-get install -y git curl
+  - apt-get update && apt-get install -y git curl docker-compose
   - git config --global url."https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de".insteadOf "https://mygit.th-deg.de"
   - echo "Waiting for Docker to be ready..."
   - until docker info 2>/dev/null; do sleep 1; done
@@ -62,7 +62,7 @@ model_service_tests:
   services:
     - docker:dind
   before_script:
-    - apt-get update && apt-get install -y git curl
+    - apt-get update && apt-get install -y git curl docker-compose
     - git config --global url."https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de".insteadOf "https://mygit.th-deg.de"
   script:
     - git clone https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
