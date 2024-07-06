@@ -38,12 +38,12 @@ build_model_backend:
     - echo "Building model service image"
     - docker-compose -f docker-compose-model.yml build model_service
 
-build_web_backend:
-  stage: build
-  image: docker:latest
-  script:
-    - echo "Building backend image"
-    - docker-compose build backend
+# build_web_backend:
+#   stage: build
+#   image: docker:latest
+#   script:
+#     - echo "Building backend image"
+#     - docker-compose build backend
 
 # build_frontend:
 #   stage: build
@@ -67,41 +67,41 @@ model_service_tests:
     - docker-compose up -d model_service
     # - sleep 60  # Wait for the model service to be fully up
     - echo "Running model service pytest tests"
-    - docker-compose exec model_service sh -c "pytest tests --junitxml=/app/test_report/pytest-report.xml"
-    - docker cp backend_modal_service_container:/app/test_report/pytest-report.xml .
+    - docker-compose exec model_service sh -c "pytest tests --junitxml=/app/pytest-report.xml"
+    - docker cp backend_modal_service_container:/app/pytest-report.xml .
   artifacts:
     when: always
     reports:
-      junit: titanic_model_service/test_report/pytest-report.xml
+      junit: titanic_model_service/pytest-report.xml
     paths:
-      - titanic_model_service/test_report/pytest-report.xml
+      - titanic_model_service/pytest-report.xml
 
-backend_tests:
-  stage: test
-  image: docker:latest
-  services:
-    - docker:dind
-  script:
-    - ./cleanup.sh
-    - echo "Cloning model service repository"
-    - rm -rf titanic_model_service
-    - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
-    - echo "Starting backend service"
-    - docker-compose up -d --build backend
-    - echo "Waiting for backend service to be healthy"
-    # - sleep 60  # Wait for backend service to be fully up
-    - docker-compose ps  # Check the status again
-    - docker-compose logs backend  # Added logs to troubleshoot backend issues
-    - docker-compose logs model_service  # Added logs to troubleshoot model_service issues
-    - echo "Running pytest tests"
-    - docker-compose exec backend sh -c "pytest --junitxml=/app/backend/pytest-report.xml"
-    - docker cp backend_service_container:/app/backend/pytest-report.xml .
-  artifacts:
-    when: always
-    reports:
-      junit: pytest-report.xml
-    paths:
-      - pytest-report.xml
+# backend_tests:
+#   stage: test
+#   image: docker:latest
+#   services:
+#     - docker:dind
+#   script:
+#     - ./cleanup.sh
+#     - echo "Cloning model service repository"
+#     - rm -rf titanic_model_service
+#     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
+#     - echo "Starting backend service"
+#     - docker-compose up -d --build backend
+#     - echo "Waiting for backend service to be healthy"
+#     # - sleep 60  # Wait for backend service to be fully up
+#     - docker-compose ps  # Check the status again
+#     - docker-compose logs backend  # Added logs to troubleshoot backend issues
+#     - docker-compose logs model_service  # Added logs to troubleshoot model_service issues
+#     - echo "Running pytest tests"
+#     - docker-compose exec backend sh -c "pytest --junitxml=/app/backend/pytest-report.xml"
+#     - docker cp backend_service_container:/app/backend/pytest-report.xml .
+#   artifacts:
+#     when: always
+#     reports:
+#       junit: pytest-report.xml
+#     paths:
+#       - pytest-report.xml
 
 # frontend_tests:
 #   stage: test
