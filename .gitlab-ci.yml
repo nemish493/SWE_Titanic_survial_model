@@ -75,6 +75,7 @@ model_service_tests:
     - sleep 60  # Wait for the model service to be fully up
     - echo "Running model service pytest tests"
     - docker-compose -f docker-compose-model.yml exec model_service sh -c "pip install -r requirements.txt && pytest tests --junitxml=/app/test_report/pytest-report.xml"
+    - docker cp backend_modal_service_container:/app/test_report/pytest-report.xml .
   artifacts:
     when: always
     reports:
@@ -99,6 +100,7 @@ backend_tests:
     - docker-compose logs backend  # Added logs to troubleshoot backend issues
     - echo "Running pytest tests"
     - docker-compose exec backend sh -c "pytest --junitxml=/app/backend/pytest-report.xml"
+    - docker cp backend_service_container:/app/backend/pytest-report.xml .
   artifacts:
     when: always
     reports:
