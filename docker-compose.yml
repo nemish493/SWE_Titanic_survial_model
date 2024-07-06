@@ -1,6 +1,8 @@
 services:
   backend:
     build: ./backend
+    # volumes:
+    #   - .:/app
     ports:
       - "8080:8080"
     depends_on:
@@ -14,6 +16,8 @@ services:
 
   frontend:
     build: ./vue-frontend
+    # volumes:
+    #   - .:/app
     ports:
       - "3000:3000"
     container_name: frontend_service_container
@@ -23,6 +27,8 @@ services:
   model_service:
     build:
       context: ./titanic_model_service
+    # volumes:
+    #   - .:/app
     container_name: backend_modal_service_container
     ports:
       - "8002:8000"  # Changed from 8002 to 8003 to avoid conflict
