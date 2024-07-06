@@ -88,7 +88,8 @@ backend_tests:
     - docker-compose ps  # Check the status again
     - docker-compose logs backend  # Added logs to troubleshoot backend issues
     - echo "Running pytest tests"
-    - docker-compose exec backend sh -c "netstat -lnptu"
+    - apk add net-tools
+    - netstat -lnptu
     - docker-compose exec backend sh -c "pytest --junitxml=/app/backend/pytest-report.xml"
     - docker cp backend_service_container:/app/backend/pytest-report.xml .
   artifacts:
