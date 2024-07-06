@@ -86,10 +86,7 @@ backend_tests:
   services:
     - docker:dind
   before_script:
-    - apt-get update && apt-get install -y git curl
-    - git clone https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de/ainb_24_sancus/titanic_web_service titanic_web_service
-    - cd titanic_web_service
-    - docker-compose up -d backend model_service
+    - docker-compose up -d backend
   script:
     - echo "Running backend tests"
     - cd backend
@@ -109,7 +106,6 @@ frontend_tests:
   services:
     - docker:dind
   before_script:
-    - apt-get update && apt-get install -y git curl
     - docker-compose up -d frontend
   script:
     - echo "Running Cypress tests"
