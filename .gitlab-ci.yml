@@ -37,7 +37,7 @@ build_model_backend:
   image: docker:latest
   script:
     - echo "Cloning model service repository"
-    - git clone https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
+    - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
     - cd titanic_model_service
     - echo "Building model service image"
     - docker-compose -f docker-compose-model.yml build model_service
@@ -61,11 +61,8 @@ model_service_tests:
   image: python:3.9
   services:
     - docker:dind
-  before_script:
-    - apt-get update && apt-get install -y git curl docker-compose
-    - git config --global url."https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de".insteadOf "https://mygit.th-deg.de"
   script:
-    - git clone https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
+    - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
     - cd titanic_model_service
     - docker-compose up -d model_service
     - echo "Running model service tests"
