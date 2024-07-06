@@ -1,122 +1,52 @@
-variables:
-  DOCKER_DRIVER: overlay2
-  DOCKER_TLS_CERTDIR: ""
-
 services:
-  - docker:dind
+  backend:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    container_name: backend_service_container
+    volumes:
+      - ./backend:/app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://0.0.0.0:8080"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 512M
 
-before_script:
-  - docker network prune -f || true
-  - docker container prune -f || true
-  - docker volume prune -f || true
-  - apk add --no-cache git curl
-  - git config --global url."https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de".insteadOf "https://mygit.th-deg.de"
-  - echo "Waiting for Docker to be ready..."
-  - sleep 60  # Increased sleep time for Docker to be fully ready
-  - docker info
-  - echo "Environment Variables:"
-  - env
-  - echo "Cleaning up Docker resources..."
-  - for i in {1..5}; do
-      docker network prune -f && break || sleep 10;
-    done
-  - docker container prune -f || true
-  - docker volume prune -f || true
-  - echo "Setting execute permission for cleanup script"
-  - chmod +x cleanup.sh
+  frontend:
+    build: ./vue-frontend
+    ports:
+      - "3000:3000"
+    container_name: frontend_service_container
+    depends_on:
+      - backend
+    deploy:
+      resources:
+        limits:
+          memory: 512M
 
-stages:
-  - cleanup
-  - build
-  - test
-
-cleanup_docker:
-  stage: cleanup
-  image: docker:latest
-  script:
-    - ./cleanup.sh
-
-build_model_backend:
-  stage: build
-  image: docker:latest
-  script:
-    - echo "Cloning model service repository"
-    - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
-    - cd titanic_model_service
-    - echo "Building model service image"
-    - docker-compose -f docker-compose-model.yml build model_service
-
-build_web_backend:
-  stage: build
-  image: docker:latest
-  script:
-    - echo "Building backend image"
-    - docker-compose build backend
-
-build_frontend:
-  stage: build
-  image: docker:latest
-  script:
-    - echo "Building frontend image"
-    - docker-compose build frontend
-
-model_service_tests:
-  stage: test
-  image: docker:latest
-  services:
-    - docker:dind
-  script:
-    - ./cleanup.sh
-    - echo "Cloning model service repository"
-    - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
-    - cd titanic_model_service
-    - echo "Starting model service"
-    - docker-compose -f docker-compose-model.yml up -d model_service
-    - sleep 60  # Wait for the model service to be fully up
-    - echo "Running model service pytest tests"
-    - docker-compose -f docker-compose-model.yml exec model_service sh -c "pip install -r requirements.txt && pytest tests --junitxml=/app/test_report/pytest-report.xml"
-  artifacts:
-    when: always
-    reports:
-      junit: titanic_model_service/test_report/pytest-report.xml
-    paths:
-      - titanic_model_service/test_report/pytest-report.xml
-
-backend_tests:
-  stage: test
-  image: docker:latest
-  services:
-    - docker:dind
-  script:
-    - ./cleanup.sh
-    - echo "Starting backend service"
-    - docker-compose up -d backend
-    - echo "Waiting for backend service to be healthy"
-    - sleep 60  # Wait for backend service to be fully up
-    - docker-compose ps  # Check the status again
-    - docker-compose logs backend  # Added logs to troubleshoot backend issues
-    - echo "Running pytest tests"
-    - docker-compose exec backend sh -c "pip install -r requirements.txt && pytest --junitxml=/app/backend/pytest-report.xml"
-  artifacts:
-    when: always
-    reports:
-      junit: backend/pytest-report.xml
-    paths:
-      - backend/pytest-report.xml
-
-frontend_tests:
-  stage: test
-  image: docker:latest
-  services:
-    - docker:dind
-  script:
-    - ./cleanup.sh
-    - echo "Starting frontend service"
-    - docker-compose up -d frontend
-    - echo "Running Cypress tests"
-    - docker-compose exec frontend sh -c "npm install && npx cypress run"
-  artifacts:
-    when: always
-    paths:
-      - vue-frontend/cypress/screenshots
-      - vue-frontend/cypress/videos
+  model_service:
+    build:
+      context: ../titanic_model_service
+      dockerfile: Dockerfile
+    ports:
+      - "8004:8000"  # Changed from 8002 to 8003 to avoid conflict
+    environment:
+      - FLASK_ENV=development
+    volumes:
+      - ../titanic_model_service:/app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://0.0.0.0:8000"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+secrets:
+  gitcredentials:
+    file: .git-credentials
