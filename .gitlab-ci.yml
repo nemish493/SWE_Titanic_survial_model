@@ -27,23 +27,23 @@ cleanup_docker:
   script:
     - ./cleanup.sh
 
-build_model_backend:
-  stage: build
-  image: docker:latest
-  script:
-    - rm -rf titanic_model_service
-    - echo "Cloning model service repository"
-    - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
-    - cd titanic_model_service
-    - echo "Building model service image"
-    - docker-compose -f docker-compose-model.yml build model_service
+# build_model_backend:
+#   stage: build
+#   image: docker:latest
+#   script:
+#     - rm -rf titanic_model_service
+#     - echo "Cloning model service repository"
+#     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
+#     - cd titanic_model_service
+#     - echo "Building model service image"
+#     - docker-compose -f docker-compose-model.yml build model_service
 
-build_web_backend:
-  stage: build
-  image: docker:latest
-  script:
-    - echo "Building backend image"
-    - docker-compose build backend
+# build_web_backend:
+#   stage: build
+#   image: docker:latest
+#   script:
+#     - echo "Building backend image"
+#     - docker-compose build backend
 
 build_frontend:
   stage: build
