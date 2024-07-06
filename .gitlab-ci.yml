@@ -89,6 +89,8 @@ backend_tests:
     - docker:dind
   script:
     - ./cleanup.sh
+    - echo "Cloning model service repository"
+    - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
     - echo "Starting backend service"
     - docker-compose up -d backend
     - echo "Waiting for backend service to be healthy"
@@ -96,7 +98,7 @@ backend_tests:
     - docker-compose ps  # Check the status again
     - docker-compose logs backend  # Added logs to troubleshoot backend issues
     - echo "Running pytest tests"
-    - docker-compose exec backend sh -c "pip install -r requirements.txt && pytest --junitxml=/app/backend/pytest-report.xml"
+    - docker-compose exec backend sh -c "pytest --junitxml=/app/backend/pytest-report.xml"
   artifacts:
     when: always
     reports:
