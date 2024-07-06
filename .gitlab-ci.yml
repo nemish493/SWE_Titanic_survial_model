@@ -65,10 +65,10 @@ model_service_tests:
   before_script:
     - apt-get update && apt-get install -y git curl
     - git config --global url."https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de".insteadOf "https://mygit.th-deg.de"
+  script:
     - git clone https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
     - cd titanic_model_service
     - docker-compose up -d model_service
-  script:
     - echo "Running model service tests"
     - pip install -r requirements.txt
     - mkdir -p test_report
@@ -85,9 +85,8 @@ backend_tests:
   image: python:3.9
   services:
     - docker:dind
-  before_script:
-    - docker-compose up -d backend
   script:
+    - docker-compose up -d backend
     - echo "Running backend tests"
     - cd backend
     - pip install -r requirements.txt
@@ -105,9 +104,8 @@ frontend_tests:
   image: node:14
   services:
     - docker:dind
-  before_script:
-    - docker-compose up -d frontend
   script:
+    - docker-compose up -d frontend
     - echo "Running Cypress tests"
     - cd vue-frontend
     - npm install
