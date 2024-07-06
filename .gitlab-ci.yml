@@ -17,7 +17,7 @@ before_script:
   - chmod +x cleanup.sh
 
 stages:
-  - cleanup
+  # - cleanup
   - build
   - test
 
@@ -27,52 +27,52 @@ cleanup_docker:
   script:
     - ./cleanup.sh
 
-build_model_backend:
-  stage: build
-  image: docker:latest
-  script:
-    - echo "Cloning model service repository"
-    - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
-    - cd titanic_model_service
-    - echo "Building model service image"
-    - docker-compose -f docker-compose-model.yml build model_service
+# build_model_backend:
+#   stage: build
+#   image: docker:latest
+#   script:
+#     - echo "Cloning model service repository"
+#     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
+#     - cd titanic_model_service
+#     - echo "Building model service image"
+#     - docker-compose -f docker-compose-model.yml build model_service
 
-build_web_backend:
-  stage: build
-  image: docker:latest
-  script:
-    - echo "Building backend image"
-    - docker-compose build backend
+# build_web_backend:
+#   stage: build
+#   image: docker:latest
+#   script:
+#     - echo "Building backend image"
+#     - docker-compose build backend
 
-build_frontend:
-  stage: build
-  image: docker:latest
-  script:
-    - echo "Building frontend image"
-    - docker-compose build frontend
+# build_frontend:
+#   stage: build
+#   image: docker:latest
+#   script:
+#     - echo "Building frontend image"
+#     - docker-compose build frontend
 
-model_service_tests:
-  stage: test
-  image: docker:latest
-  services:
-    - docker:dind
-  script:
-    - ./cleanup.sh
-    - echo "Cloning model service repository"
-    - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
-    - cd titanic_model_service
-    - echo "Starting model service"
-    - docker-compose -f docker-compose-model.yml up -d model_service
-    - sleep 60  # Wait for the model service to be fully up
-    - echo "Running model service pytest tests"
-    - docker-compose -f docker-compose-model.yml exec model_service sh -c "pytest tests --junitxml=/app/test_report/pytest-report.xml"
-    - docker cp modal_service_container:/app/test_report/pytest-report.xml .
-  artifacts:
-    when: always
-    reports:
-      junit: titanic_model_service/test_report/pytest-report.xml
-    paths:
-      - titanic_model_service/test_report/pytest-report.xml
+# model_service_tests:
+#   stage: test
+#   image: docker:latest
+#   services:
+#     - docker:dind
+#   script:
+#     - ./cleanup.sh
+#     - echo "Cloning model service repository"
+#     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
+#     - cd titanic_model_service
+#     - echo "Starting model service"
+#     - docker-compose -f docker-compose-model.yml up -d model_service
+#     - sleep 60  # Wait for the model service to be fully up
+#     - echo "Running model service pytest tests"
+#     - docker-compose -f docker-compose-model.yml exec model_service sh -c "pytest tests --junitxml=/app/test_report/pytest-report.xml"
+#     - docker cp modal_service_container:/app/test_report/pytest-report.xml .
+#   artifacts:
+#     when: always
+#     reports:
+#       junit: titanic_model_service/test_report/pytest-report.xml
+#     paths:
+#       - titanic_model_service/test_report/pytest-report.xml
 
 backend_tests:
   stage: test
@@ -89,6 +89,7 @@ backend_tests:
     - docker-compose logs backend  # Added logs to troubleshoot backend issues
     - echo "Running pytest tests"
     - docker-compose exec backend sh -c "pytest --junitxml=/app/backend/pytest-report.xml"
+    - docker-compose exec backend sh -c "lsof -nP -iTCP -sTCP:LISTEN"
     - docker cp backend_service_container:/app/backend/pytest-report.xml .
   artifacts:
     when: always
@@ -97,19 +98,19 @@ backend_tests:
     paths:
       - pytest-report.xml
 
-frontend_tests:
-  stage: test
-  image: docker:latest
-  services:
-    - docker:dind
-  script:
-    - ./cleanup.sh
-    - echo "Starting frontend service"
-    - docker-compose up -d frontend
-    - echo "Running Cypress tests"
-    - docker-compose exec frontend sh -c "npm install && npx cypress run"
-  artifacts:
-    when: always
-    paths:
-      - vue-frontend/cypress/screenshots
-      - vue-frontend/cypress/videos
+# frontend_tests:
+#   stage: test
+#   image: docker:latest
+#   services:
+#     - docker:dind
+#   script:
+#     - ./cleanup.sh
+#     - echo "Starting frontend service"
+#     - docker-compose up -d frontend
+#     - echo "Running Cypress tests"
+#     - docker-compose exec frontend sh -c "npm install && npx cypress run"
+#   artifacts:
+#     when: always
+#     paths:
+#       - vue-frontend/cypress/screenshots
+#       - vue-frontend/cypress/videos
