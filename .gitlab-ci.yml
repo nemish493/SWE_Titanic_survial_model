@@ -62,13 +62,13 @@ model_service_tests:
     - echo "Cloning model service repository"
     - rm -rf titanic_model_service
     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
-    - cd titanic_model_service
+    # - cd titanic_model_service
     - echo "Starting model service"
-    - docker-compose -f docker-compose-model.yml up -d model_service
+    - docker-compose up -d model_service
     # - sleep 60  # Wait for the model service to be fully up
     - echo "Running model service pytest tests"
-    - docker-compose -f docker-compose-model.yml exec model_service sh -c "pytest tests --junitxml=/app/test_report/pytest-report.xml"
-    - docker cp modal_service_container:/app/test_report/pytest-report.xml .
+    - docker-compose exec model_service sh -c "pytest tests --junitxml=/app/test_report/pytest-report.xml"
+    - docker cp backend_modal_service_container:/app/test_report/pytest-report.xml .
   artifacts:
     when: always
     reports:
