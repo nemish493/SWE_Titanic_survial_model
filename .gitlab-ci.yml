@@ -16,12 +16,6 @@ before_script:
   - docker info
   - echo "Environment Variables:"
   - env
-  - echo "Cleaning up Docker resources..."
-  - for i in {1..5}; do
-      docker network prune -f && break || sleep 10;
-    done
-  - docker container prune -f || true
-  - docker volume prune -f || true
   - echo "Setting execute permission for cleanup script"
   - chmod +x cleanup.sh
 
