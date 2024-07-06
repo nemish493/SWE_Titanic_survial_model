@@ -90,8 +90,6 @@ backend_tests:
     - docker:dind
   script:
     - ./cleanup.sh
-    - echo "Cloning model service repository"
-    - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
     - echo "Starting backend service"
     - docker-compose up -d backend
     - echo "Waiting for backend service to be healthy"
