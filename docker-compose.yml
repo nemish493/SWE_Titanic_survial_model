@@ -25,7 +25,7 @@ services:
       context: ./titanic_model_service
     container_name: backend_modal_service_container
     ports:
-      - "8000:8000"  # Changed from 8002 to 8003 to avoid conflict
+      - "8002:8000"  # Changed from 8002 to 8003 to avoid conflict
     environment:
       - FLASK_ENV=development
     healthcheck:

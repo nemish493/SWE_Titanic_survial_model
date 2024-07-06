@@ -30,7 +30,7 @@ async def surv_or_not(model_name: str, passenger: Passenger):
     passenger_dict = passenger.model_dump()  # Use model_dump instead of dict
     logging.debug(f"Request payload: {passenger_dict}")
     try:
-        response = requests.post(f"http://model_service:8000/surv/{model_name}", json=passenger_dict)
+        response = requests.post(f"http://model_service:8002/surv/{model_name}", json=passenger_dict)
         response.raise_for_status()
         logging.debug(f"Model backend response: {response.json()}")
         return response.json()
