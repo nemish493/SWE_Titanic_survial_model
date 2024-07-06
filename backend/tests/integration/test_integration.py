@@ -1,6 +1,6 @@
 import requests
 
-MAIN_BACKEND_URL = "http://backend:8080"  # Assuming backend service name is 'backend'
+MAIN_BACKEND_URL = "http://localhost:8080"  # Assuming backend service name is 'backend'
 MODEL_BACKEND_URL = "http://backend_modal_service_container:8000"  # Correct service name and port
 
 def test_main_backend_to_model_backend():
