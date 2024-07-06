@@ -21,11 +21,11 @@ stages:
   - build
   - test
 
-cleanup_docker:
-  stage: cleanup
-  image: docker:latest
-  script:
-    - ./cleanup.sh
+# cleanup_docker:
+#   stage: cleanup
+#   image: docker:latest
+#   script:
+#     - ./cleanup.sh
 
 # build_model_backend:
 #   stage: build
