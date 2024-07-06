@@ -84,7 +84,7 @@ backend_tests:
     - echo "Cloning model service repository"
     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
     - echo "Starting backend service"
-    - docker-compose up -d --build --no-cache backend
+    - docker-compose up -d --build backend
     - echo "Waiting for backend service to be healthy"
     # - sleep 60  # Wait for backend service to be fully up
     - docker-compose ps  # Check the status again
