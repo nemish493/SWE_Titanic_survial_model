@@ -15,7 +15,6 @@ before_script:
   - env
   - echo "Setting execute permission for cleanup script"
   - chmod +x cleanup.sh
-  - apk add lsof
 
 stages:
   # - cleanup
@@ -89,6 +88,7 @@ backend_tests:
     - docker-compose ps  # Check the status again
     - docker-compose logs backend  # Added logs to troubleshoot backend issues
     - echo "Running pytest tests"
+    - apk add lsof
     - docker-compose exec backend sh -c "lsof -nP -iTCP -sTCP:LISTEN"
     - docker-compose exec backend sh -c "pytest --junitxml=/app/backend/pytest-report.xml"
     - docker cp backend_service_container:/app/backend/pytest-report.xml .
