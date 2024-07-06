@@ -11,8 +11,8 @@ before_script:
   - echo "Waiting for Docker to be ready..."
   # - sleep 60  # Increased sleep time for Docker to be fully ready
   # - docker info
-  - echo "Environment Variables:"
-  - env
+  # - echo "Environment Variables:"
+  # - env
   - echo "Setting execute permission for cleanup script"
   - chmod +x cleanup.sh
 
@@ -82,6 +82,7 @@ backend_tests:
   script:
     - ./cleanup.sh
     - echo "Cloning model service repository"
+    - rm -rf titanic_model_service
     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
     - echo "Starting backend service"
     - docker-compose up -d --build backend
@@ -91,8 +92,6 @@ backend_tests:
     - docker-compose logs backend  # Added logs to troubleshoot backend issues
     - docker-compose logs model_service  # Added logs to troubleshoot model_service issues
     - echo "Running pytest tests"
-    - apk add net-tools
-    - netstat -lnptu
     - docker-compose exec backend sh -c "pytest --junitxml=/app/backend/pytest-report.xml"
     - docker cp backend_service_container:/app/backend/pytest-report.xml .
   artifacts:
