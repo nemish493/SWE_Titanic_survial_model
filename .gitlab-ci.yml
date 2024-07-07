@@ -7,10 +7,9 @@ services:
 
 before_script:
   - apk add --no-cache git curl
-  # - docker system prune -f
   - git config --global url."https://as23727:${GITLAB_TOKEN}@mygit.th-deg.de".insteadOf "https://mygit.th-deg.de"
   - echo "Waiting for Docker to be ready..."
-  # - sleep 60  # Increased sleep time for Docker to be fully ready
+  - sleep 60  # Increased sleep time for Docker to be fully ready
   - docker info
   - echo "Environment Variables:"
   - env
@@ -65,10 +64,9 @@ model_service_tests:
     - rm -rf titanic_model_service
     - echo "Cloning model service repository"
     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
-    # - cd titanic_model_service
     - echo "Starting model service"
     - docker-compose up -d --build model_service
-    # - sleep 60  # Wait for the model service to be fully up
+    - sleep 60  # Wait for the model service to be fully up
     - echo "Running model service pytest tests"
     - docker-compose exec model_service sh -c "pytest tests --junitxml=/app/pytest-report.xml"
     - docker cp backend_modal_service_container:/app/pytest-report.xml model-service-pytest-report.xml
@@ -92,7 +90,7 @@ backend_tests:
     - echo "Starting backend service"
     - docker-compose up -d --build backend
     - echo "Waiting for backend service to be healthy"
-    # - sleep 60  # Wait for backend service to be fully up
+    - sleep 60  # Wait for backend service to be fully up
     - docker-compose ps  # Check the status again
     - docker-compose logs backend  # Added logs to troubleshoot backend issues
     - docker-compose logs model_service  # Added logs to troubleshoot model_service issues
