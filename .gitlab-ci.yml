@@ -46,6 +46,8 @@ build_model_backend:
 #     - echo "Building backend image"
 #     - docker-compose build backend
 
+
+
 # build_frontend:
 #   stage: build
 #   image: docker:latest
