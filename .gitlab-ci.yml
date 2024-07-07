@@ -62,8 +62,8 @@ model_service_tests:
     - docker:dind
   script:
     - ./cleanup.sh
-    - echo "Cloning model service repository"
     - rm -rf titanic_model_service
+    - echo "Cloning model service repository"
     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
     # - cd titanic_model_service
     - echo "Starting model service"
@@ -71,13 +71,14 @@ model_service_tests:
     # - sleep 60  # Wait for the model service to be fully up
     - echo "Running model service pytest tests"
     - docker-compose exec model_service sh -c "pytest tests --junitxml=/app/pytest-report.xml"
-    - docker cp backend_modal_service_container:/app/pytest-report.xml .
+    - docker cp backend_modal_service_container:/app/pytest-report.xml model-service-pytest-report.xml
+    - ls -lah
   artifacts:
     when: always
     reports:
-      junit: titanic_model_service/pytest-report.xml
+      junit: model-service-pytest-report.xml
     paths:
-      - titanic_model_service/pytest-report.xml
+      - model-service-pytest-report.xml
 
 # backend_tests:
 #   stage: test
