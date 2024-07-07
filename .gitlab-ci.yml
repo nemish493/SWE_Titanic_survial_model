@@ -28,16 +28,16 @@ cleanup_docker:
   script:
     - ./cleanup.sh
 
-build_model_backend:
-  stage: build
-  image: docker:latest
-  script:
-    - rm -rf titanic_model_service
-    - echo "Cloning model service repository"
-    - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
-    - cd titanic_model_service
-    - echo "Building model service image"
-    - docker-compose -f docker-compose-model.yml build model_service
+# build_model_backend:
+#   stage: build
+#   image: docker:latest
+#   script:
+#     - rm -rf titanic_model_service
+#     - echo "Cloning model service repository"
+#     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
+#     - cd titanic_model_service
+#     - echo "Building model service image"
+#     - docker-compose build model_service
 
 # build_web_backend:
 #   stage: build
@@ -67,7 +67,7 @@ model_service_tests:
     - git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service titanic_model_service
     # - cd titanic_model_service
     - echo "Starting model service"
-    - docker-compose up -d model_service
+    - docker-compose up -d --build model_service
     # - sleep 60  # Wait for the model service to be fully up
     - echo "Running model service pytest tests"
     - docker-compose exec model_service sh -c "pytest tests --junitxml=/app/pytest-report.xml"
