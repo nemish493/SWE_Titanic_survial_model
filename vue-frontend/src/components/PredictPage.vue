@@ -8,30 +8,29 @@
       </nav>
     </header>
 
-    <div class="explain">
-      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Assumenda hic amet magni, sunt quae totam, dignissimos
-      omnis nemo minima repudiandae voluptates neque atque in veritatis explicabo, eos culpa! Quidem autem iste
-      veritatis laboriosam, dolores tempore rem quo cumque minima eaque possimus rerum aperiam error sed non eos totam
-      vero quas. Corporis consequatur quas incidunt, rerum, aspernatur, eum ratione voluptatum molestias velit non
-      impedit expedita quaerat illum similique laboriosam amet iste soluta? Sit ratione quos tempora eos, corrupti
-      perferendis sint repudiandae delectus libero architecto odio cupiditate impedit? Aspernatur architecto sapiente
-      fuga deleniti voluptatem, quasi, perspiciatis, officiis qui modi sequi iusto adipisci.
-    </div>
-
     <main>
       <div class="history">
         <div class="header">
           <h1>History</h1>
           <p>Past 5 User search history</p>
         </div>
+
+        
         <div class="display" v-if="history.length">
-          <div v-for="(entry, index) in history" :key="index">
+          <!--  -->
+          <div class="details" v-for="(entry, index) in history" :key="index">
             <div>Passenger Class: {{ entry.pclass }} , Sex: {{ entry.sex }} , Age: {{ entry.age }} , Fare: {{ entry.fare }} , Travelled alone: {{ entry.traveled_alone }} , Embarked: {{ entry.embarked }} , Model: {{ entry.model }} , Result: {{ entry.result }}
             </div>
-            <br>
+            <!-- <div>Passenger Class: First , Sex: Male , Age: 16 , Fare: 200$ , Travelled alone: No , Embarked: Haryana , Model: KNN , 
+            </div>
+            <div>
+              Result: Passenger will survive
+            </div> -->
           </div>
         </div>
       </div>
+
+
       <div class="form">
         <form @submit.prevent="submitForm" class="form-container">
           <div class="form-group">
@@ -105,8 +104,9 @@
 
           </div>
 
-          <div v-if="result !== null">
-          <h3>Result:</h3>
+         
+          <div class="result"  v-if="result !== null">
+          <h3>Result</h3>
           <span >{{ ans }}</span>
          </div>
         </form>
@@ -260,6 +260,12 @@ main {
   font-size: 1.1rem;
 }
 
+.display .details{
+  padding: 1rem;
+  background-color: rgba(0, 0, 255, 0.128);
+  border-radius: 20px;
+}
+
 .history .display {
   padding: 1rem;
   margin: 1rem;
@@ -382,5 +388,15 @@ input[type="range"]::-ms-fill-upper {
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
+}
+
+.result{
+  padding: 1rem;
+  background-color: #111827;
+  border-radius: 1rem;
+}
+
+.result h3{
+  color: #0ccd12;
 }
 </style>
