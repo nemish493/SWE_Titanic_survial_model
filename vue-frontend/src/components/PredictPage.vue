@@ -27,7 +27,11 @@
               Result: Passenger will survive
             </div> -->
           </div>
+
+          <button type="reset" class="btn" @click = "clearHistory">Reset History</button>
         </div>
+
+        
       </div>
 
 
@@ -99,6 +103,7 @@
               </select>
             </div>
 
+            <button type="reset" class="btn" @click="resetForm">Reset</button>
 
             <button type="submit" class="btn">Submit</button>
 
@@ -147,9 +152,6 @@ export default {
           "fare": this.slider2,
           "traveled_alone": this.dropdown5,
           "embarked": this.dropdown3,
-          
-
-          
         });
         this.result = response.data["survived"];
         console.log(this.result);
@@ -180,6 +182,22 @@ export default {
         console.error("Error submitting form:", error);
       }
     },
+
+    resetForm() {
+      this.dropdown1 = "";
+      this.dropdown2 = "";
+      this.dropdown3 = "";
+      this.dropdown4 = "";
+      this.dropdown5 = "";
+      this.slider1 = 1;
+      this.slider2 = 1;
+      this.result = null;
+      this.ans = null;
+    },
+
+    clearHistory() {
+      this.history = [];
+    }
   },
 };
 </script>
@@ -252,6 +270,7 @@ main {
   margin: 2rem;
 }
 
+
 .history .header {
   padding: 1rem;
   margin: 1rem;
@@ -264,6 +283,10 @@ main {
   padding: 1rem;
   background-color: rgba(0, 0, 255, 0.128);
   border-radius: 20px;
+}
+
+.details{
+  margin: 1rem
 }
 
 .history .display {

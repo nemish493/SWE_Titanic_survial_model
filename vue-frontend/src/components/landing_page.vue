@@ -52,6 +52,7 @@
             <p>
             <ul>
               <li>Backend Engineer</li>
+              <li>Machine learning Engineer</li>
             </ul>
             </p>
           </div>
@@ -61,7 +62,6 @@
             <p>
             <ul>
               <li>Software Tester</li>
-              <li>DevOps Engineer</li>
             </ul>
             </p>
           </div>
@@ -70,7 +70,7 @@
             <h4>Aadi Ahluwalia</h4>
             <p>
             <ul>
-              <li>Deployment Specialist</li>
+              <li>Frontend Engineer</li>
               <li>Version Control Manager</li>
             </ul>
             </p>
@@ -80,7 +80,6 @@
             <h4>Aryan Jain</h4>
             <p>
             <ul>
-              <li>Deployment Specialist</li>
               <li>Version Control Manager</li>
             </ul>
             </p>
@@ -96,7 +95,7 @@
             </p>
           </div>
           <div class="team-member">
-            <img src="../assets/pp.webp" alt="Bhanu Pratap Singh">
+            <img src="../assets/harsh.jpeg" alt="Bhanu Pratap Singh">
             <h4>Harsh Gurawaliya</h4>
             <p>
             <ul>
@@ -105,12 +104,11 @@
             </p>
           </div>
           <div class="team-member">
-            <img src="../assets/pp.webp" alt="Bhanu Pratap Singh">
+            <img src="../assets/jijainth.jpeg" alt="Bhanu Pratap Singh">
             <h4>Jijainth Dhinakaran</h4>
             <p>
             <ul>
               <li>Frontend Engineer</li>
-              <li>UI/UX Designer</li>
             </ul>
             </p>
           </div>
@@ -121,11 +119,13 @@
         <div class="f-links">
           <div class="gitlab">
             <h2>Gitlab Repository</h2>
+            <a href="https://mygit.th-deg.de/ainb_24_sancus">
             <img src="../assets/gitlab-logo.png" alt="">
+          </a>
           </div>
           <div class="dataset">
             <h2>Kaggle Dataset</h2>
-            <img src="../assets/dataset.png" alt="">
+            <a href="https://www.kaggle.com/c/titanic/data"><img src="../assets/dataset.png" alt=""></a>
           </div>
          
         </div>
