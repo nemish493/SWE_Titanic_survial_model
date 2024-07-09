@@ -23,6 +23,7 @@ stages:
   - cleanup
   - build
   - test
+  - deploy
 
 cleanup_docker:
   stage: cleanup
@@ -121,3 +122,13 @@ frontend_tests:
     when: always
     paths:
       - vue-frontend/cypress/screenshots
+
+deploy:
+  stage: deploy
+  image: docker:latest
+  script:
+    - echo "Deploying to production"
+    - docker-compose up -d --build --remove-orphans
+  environment:
+    name: production
+    url: http://localhost:8080
