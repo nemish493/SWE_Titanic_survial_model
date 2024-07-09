@@ -23,7 +23,6 @@
         <p>
           This web application allows users to predict the survival chances of Titanic passengers based on various input
           parameters. Our goal is to showcase the application of machine learning models in a real-world scenario.
-
         </p>
         <router-link to="/predict"><button class="btn">Prediction Calculator</button></router-link>
       </div>
@@ -117,22 +116,19 @@
       <div id="f-link" class="f-link">
         <h1>Relevant Links : </h1>
         <div class="f-links">
-          <div class="gitlab">
+          <div class="link">
             <h2>Gitlab Repository</h2>
             <a href="https://mygit.th-deg.de/ainb_24_sancus">
             <img src="../assets/gitlab-logo.png" alt="">
           </a>
           </div>
-          <div class="dataset">
+          <div class="link">
             <h2>Kaggle Dataset</h2>
             <a href="https://www.kaggle.com/c/titanic/data"><img src="../assets/dataset.png" alt=""></a>
           </div>
-         
         </div>
-
       </div>
     </footer>
-
   </div>
 </template>
 
@@ -158,10 +154,8 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* margin-top:-10vh; */
   font-family: 'Poppins', sans-serif;
   background-color: #18181B;
-  /* padding-top: 2vh; */
 }
 
 img {
@@ -175,12 +169,13 @@ a {
 
 nav {
   max-width: 1200px;
+  width: 100%;
   margin: auto;
   padding: 2rem 1rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .nav-logo {
@@ -188,10 +183,12 @@ nav {
 }
 
 .nav-links {
+  margin: 2rem;
   list-style: none;
   display: flex;
   align-items: center;
-  gap: 3rem;
+  gap: 2rem;
+  flex-wrap: wrap;
 }
 
 .link a {
@@ -216,7 +213,6 @@ nav {
 }
 
 .btn {
-
   padding: 1rem 2rem;
   font-size: 1rem;
   color: #fff;
@@ -236,17 +232,17 @@ header .btn {
 
 .container {
   max-width: 1200px;
+  width: 100%;
   margin: auto;
   padding: 5rem 2rem;
 }
 
 header {
-  position: relative;
-  /* padding-top: 1rem; */
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   align-items: center;
   gap: 2rem;
+  width: 100%;
 }
 
 header .content h4 {
@@ -259,9 +255,9 @@ header .content h4 {
 header .content h1 {
   color: #fff;
   margin-bottom: 1rem;
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: 700;
-  line-height: 4rem;
+  line-height: 3rem;
 }
 
 header .content h1 span {
@@ -274,12 +270,8 @@ header .content p {
   color: #ccc;
 }
 
-header .image {
-  position: relative;
-}
-
 header .image img {
-  max-width: 600px;
+  max-width: 100%;
   margin: auto;
 }
 
@@ -300,6 +292,8 @@ footer {
   font-size: 1.5rem;
   margin-bottom: 1.5rem;
 }
+
+
 
 .team-grid {
   display: grid;
@@ -337,45 +331,65 @@ footer {
   background-color: #18181B;
   margin: 4rem 0 0 0;
   padding: 2rem;
-  /* border: 2px solid white; */
   border-radius: 50px;
 }
 
 .f-links {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
   align-items: center;
-  margin-top: 3rem;
+  justify-content: space-around;
+  margin: 3rem;
 }
 
 .f-links img {
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
   border-radius: 10%;
   object-fit: contain;
-  /* margin-bottom: 0.5rem; */
 }
 
-@media (width < 1000px) {
+@media (max-width: 1000px) {
   .nav-links {
-    display: flex;
     flex-direction: column;
+    gap: 1rem;
   }
 
   header {
-    grid-template-columns: repeat(1, 1fr);
-  }
-
-  header .image {
-    grid-area: 1/1/2/2;
-
+    grid-template-columns: 1fr;
   }
 }
 
-@media (width < 600px) {
-  header .image::before {
-    display: none;
+@media (max-width: 600px) {
+  .nav-links {
+    gap: 0.5rem;
+  }
+
+  .btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+  }
+
+  header .content h1 {
+    font-size: 2rem;
+    line-height: 2.5rem;
+  }
+
+  .f-links {
+    flex-direction: column;
+    
+  }
+
+  .link{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .f-links img {
+    width: 80px;
+    height: 80px;
   }
 }
 </style>
