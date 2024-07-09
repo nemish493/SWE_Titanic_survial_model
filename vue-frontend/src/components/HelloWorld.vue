@@ -29,10 +29,13 @@
           The application is built using a combination of modern web technologies:
         </p>
         <ul>
-          <li><strong>Frontend:</strong> Developed with Vue.js, utilizing components for a modular structure. Key components include `HelloWorld.vue`, `landing_page.vue`, and `PredictPage.vue`.</li>
-          <li><strong>Backend:</strong> Implemented with FastAPI, a modern Python web framework. This handles the model predictions and serves the RESTful API.</li>
-          <li><strong>Machine Learning Models:</strong> Includes Random Forest, Decision Tree, KNN, SVM, and Logistic Regression. These models are trained using historical Titanic data and are stored as Pickle files for inference.</li>
-          <li><strong>Docker:</strong> The entire application, including the web interface and prediction service, is containerized using Docker and managed with Docker Compose.</li>
+          <li><u><strong>Frontend:</strong></u>    Developed with Vue.js, utilizing components for a modular structure. Key components include `HelloWorld.vue`, `landing_page.vue`, and `PredictPage.vue`.</li>
+          <br>
+          <li><u><strong>Backend:</strong></u>    Implemented with FastAPI, a modern Python web framework. This handles the model predictions and serves the RESTful API.</li>
+          <br>
+          <li><u><strong>Machine Learning Models:</strong></u>    Includes Random Forest, Decision Tree, KNN, SVM, and Logistic Regression. These models are trained using historical Titanic data and are stored as Pickle files for inference.</li>
+          <br>
+          <li><u><strong>Docker:</strong></u>    The entire application, including the web interface and prediction service, is containerized using Docker and managed with Docker Compose.</li>
         </ul>
       </section>
 
@@ -42,10 +45,13 @@
           New to our website? Here’s a quick guide to get you started:
         </p>
         <ul>
-          <li><strong>Landing Page:</strong> Start here to understand the basics of our application. You'll find an introduction and a link to the Survival Calculator.</li>
-          <li><strong>Survival Calculator:</strong> Navigate to this page to input passenger details (class, sex, age, fare, traveling alone, and embarked location) and choose from various prediction models. The calculator will show predictions for survival based on the input data.</li>
-          <li><strong>Predictions:</strong> View real-time predictions for the selected models as you input data. The page also maintains a history of the last 5 predictions made during your session.</li>
-          <li><strong>Contact Us:</strong> For any questions or feedback, use the contact information provided on the site.</li>
+          <li><u><strong>Landing Page:</strong></u> Start here to understand the basics of our application. You'll find an introduction and a link to the Survival Calculator.</li>
+          <br>
+          <li><u><strong>Survival Calculator:</strong></u> Navigate to this page to input passenger details (class, sex, age, fare, traveling alone, and embarked location) and choose from various prediction models. The calculator will show predictions for survival based on the input data.</li>
+          <br>
+          <li><u><strong>Predictions:</strong></u> View real-time predictions for the selected models as you input data. The page also maintains a history of the last 5 predictions made during your session.</li>
+          <br>
+          <li><u><strong>Contact Us:</strong></u> For any questions or feedback, use the contact information provided on the site.</li>
         </ul>
       </section>
     </main>
@@ -210,6 +216,12 @@ footer {
 }
 
 @media (min-width: 600px) {
+
+  .btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+  }
+
   nav {
     flex-direction: row;
     justify-content: space-between;
