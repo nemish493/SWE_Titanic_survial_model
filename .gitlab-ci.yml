@@ -121,4 +121,3 @@ frontend_tests:
     when: always
     paths:
       - vue-frontend/cypress/screenshots
-      - vue-frontend/cypress/videos
