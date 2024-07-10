@@ -7,6 +7,8 @@ This project is part of the Summerterm 2024 AIN-B Software Engineering course le
 1. **Titanic Survivor App**: A web application to predict the survival of passengers in the Titanic accident.
 2. **Presentation**: A demonstration of the developed software, insights on the system architecture, and individual contributions.
 
+
+
 ## Team Information
 
 - **Team Members**: 
@@ -19,101 +21,6 @@ This project is part of the Summerterm 2024 AIN-B Software Engineering course le
   - Nemish Kyada : 22212034
   - Rohit Galani : 22209032
 
-## Project Structure
-```
-titanic_web_service-main/
-├── __pycache__/
-│   ├── backend.cpython-310.pyc
-│   ├── main.cpython-310.pyc
-│   └── main.cpython-311.pyc
-├── backend/
-│   ├── __pycache__/
-│   │   ├── main.cpython-311.pyc
-│   │   ├── main.cpython-312 2.pyc
-│   │   ├── main.cpython-312.pyc
-│   │   ├── main.cpython-39.pyc
-│   │   ├── predict.cpython-312 2.pyc
-│   │   └── predict.cpython-312.pyc
-│   ├── dist/
-│   │   ├── css/
-│   │   │   ├── app.5fed518f.css
-│   │   │   └── app.a2f58a13.css
-│   │   ├── img/
-│   │   │   ├── aadi.02a7f0ab.png
-│   │   │   ├── aryan.453d5392.png
-│   │   │   ├── avanish.f96d5188.png
-│   │   │   ├── bhanu.b242fc23.png
-│   │   │   ├── dataset.a5484bc2.png
-│   │   │   ├── gitlab-logo.db385ac.png
-│   │   │   ├── header.f3f1b282.png
-│   │   │   ├── nemish.5987e7f8.png
-│   │   │   ├── pp.f7e8cfa8.webp
-│   │   │   ├── rohit.165c520d.png
-│   │   │   └── ship.b0486ab9.png
-│   │   ├── js/
-│   │   │   ├── app.5fed518f.js
-│   │   │   └── app.a2f58a13.js
-│   │   ├── favicon.ico
-│   │   └── index.html
-│   ├── tests/
-│   │   ├── __pycache__/
-│   │   │   ├── test_01.cpython-310.pyc
-│   │   │   ├── test_01.cpython-39.pyc
-│   │   │   └── test_02.cpython-310.pyc
-│   │   ├── test_01.py
-│   │   └── test_02.py
-│   ├── .DS_Store
-│   ├── dockerfile
-│   ├── main.py
-│   ├── package-lock.json
-│   └── requirements.txt
-├── vue-frontend/
-│   ├── cypress/
-│   │   ├── e2e/
-│   │   │   ├── titanic/
-│   │   │   │   └── survival_calculator.spec.cy.js
-│   │   ├── fixtures/
-│   │   │   ├── titanic_survival_prediction.json
-│   │   │   ├── titanic_survival_result.json
-│   │   ├── screenshots/
-│   │   │   ├── cypress/
-│   │   │   │   ├── e2e/
-│   │   │   │   │   ├── titanic/
-│   │   │   │   │   │   ├── survival_calculator.spec.cy.js/
-│   │   │   │   │   │   │   ├── Home Page.png
-│   │   │   │   │   │   │   └── Survival Calculator.png
-│   │   ├── support/
-│   │   │   ├── commands.js
-│   │   │   └── e2e.js
-│   ├── public/
-│   │   ├── favicon.ico
-│   │   └── index.html
-│   ├── src/
-│   │   ├── assets/
-│   │   │   ├── aadi.png
-│   │   │   ├── aryan.png
-│   │   │   ├── avanish.png
-│   │   │   ├── bhanu.png
-│   │   │   ├── dataset.png
-│   │   │   ├── dataset.webp
-│   │   │   ├── gitlab-logo.png
-│   │   │   ├── header.png
-│   │   │   ├── nemish.png
-│   │   │   ├── pp.webp
-│   │   │   ├── rohit.png
-│   │   │   └── ship.png
-│   │   ├── components/
-│   │   │   ├── HelloWorld.vue
-│   │   │   ├── PredictPage.vue
-│   │   │   └── landing_page.vue
-│   │   ├── App.vue
-│   │   └── main.js
-├── .DS_Store
-├── .gitlab-ci.yml
-├── LICENSE
-├── README.md
-└── docker-compose.yml
-```
 ## Requirements and Setup
 
 ### Prerequisites
@@ -121,26 +28,34 @@ titanic_web_service-main/
 - **Docker**: Ensure Docker is installed and running on your machine. [Docker Installation Guide](https://docs.docker.com/get-docker/)
 - **Docker Compose**: Ensure Docker Compose is installed. [Docker Compose Installation Guide](https://docs.docker.com/compose/install/)
 
-### Cloning Repositories
+### Repository Links
 
-The project is divided into two repositories within the team's Gitlab group:
+1. **Web Application Service Repository**: https://mygit.th-deg.de/ainb_24_sancus/titanic_web_service
+2. **Prediction Model Service Repository**: https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service
 
-1. **Web Application Service Repository**: [Link to the repository]
-2. **Prediction Model Service Repository**: [Link to the repository]
 
-Clone both repositories to your local machine.
+### Repository Structure
+
+1. The web service is the parent repository, whereas the model service is the secondary repository. To run the project:
+
+2. Inside the titanic_web_service directory, clone the model service repository in empty directory of titanic_model service.
 
 ```sh
-git clone <web_application_service_repo>
-git clone <prediction_model_service_repo>
+git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_web_service.git
 ```
-
-### Building and Running the Application
-
-Navigate to the directory containing the Docker Compose file and run the following command to build and start the services:
+```sh
+cd titanic_web_service
+```
+```sh
+rm -rf titanic_model_service
+```
+```sh
+git clone https://mygit.th-deg.de/ainb_24_sancus/titanic_model_service.git
+```
+3. Open terminal, navigate to titanic_web_service, and run:
 
 ```sh
-docker-compose up --build
+docker-compose up -d --build
 ```
 
 This command will:
@@ -163,6 +78,7 @@ The web application consists of two main pages:
 
 1. **Landing Page**: Provides a short explanation of the app's functionality and a link to the Survival Calculator.
 2. **Survival Calculator**: Allows users to input passenger details and view survival predictions based on selected models.
+3. **Learn Basic**: It contain all additional data above the project, usses and techinal framework
 
 #### Passenger Details Input
 
@@ -199,27 +115,6 @@ The prediction model service:
 
 The project follows the Scrum framework with 3 sprints, each lasting 3 weeks. All non-code resources are managed in Jira.
 
-### Submissions
-
-- **Source Code and Documentation**: Includes all source code, configuration files, and documentation.
-- **Git Repositories**: Both Git repositories as downloaded from Gitlab.
-- **README File**: Instructions for building, running, and accessing the web application.
-- **Team Presentation**: A PDF of the team presentation.
-- **JIRA Sprint Planning**: A PDF export of the JIRA sprint planning at the beginning of each sprint (total of 3 PDFs).
-
-### Final Submission
-
-Submit the solution in a ZIP archive via iLearn.
-
-## Contact Information
-
-For any queries, contact Prof. Dr. Christoph Schober at christoph.schober@th-deg.de.
-
-## Additional Notes
-
-- Ensure to attend project meetings and the final presentation in Deggendorf.
-- Follow the functional and non-functional requirements outlined in the project document.
-- Check iLearn for any updates or corrections to the project requirements.
 
 ## License
 
